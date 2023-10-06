@@ -2,6 +2,8 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 const Franchise = require('madden-franchise')
 
 // let mainWindow
@@ -66,7 +68,7 @@ ipcMain.on('upload-file', (event, filePath) => {
   console.log('Attempting to open file at:', filePath);
 
   // Test with static data
-  event.sender.send('player-data', { test: 'This is a test' });
+  // event.sender.send('player-data', { test: 'This is a test' });
 
   try {
     let franchise = new Franchise(filePath);
@@ -79,7 +81,7 @@ ipcMain.on('upload-file', (event, filePath) => {
 
       playerTable
         .readRecords()
-        .then(function (table) {
+        .then(async function (table) {
           console.log('Records read:', table.records.length);
 
           const adjustPlayerWeights = (n) => {
@@ -90,7 +92,32 @@ ipcMain.on('upload-file', (event, filePath) => {
             }
           };
 
+          const prismaRecords = table.records
+            .filter(record => record.getValueByKey('ContractStatus') === 'Draft')
+            .map((record) => ({
+              firstName: record.FirstName,
+              lastName: record.LastName,
+            }));
 
+            // console.log('Prisma records:', prismaRecords);
+
+            try {
+              // await prisma.player.createMany({
+              //   data: prismaRecords,
+              //   skipDuplicates: true,
+              // });
+              const createPlayersPromises = prismaRecords.map(record => 
+                prisma.player.create({ data: record })
+              );
+              await Promise.all(createPlayersPromises);
+            } catch (error) {
+              console.error('Error creating records:', error);
+            } finally {
+              console.log('Records created');
+
+              await prisma.$disconnect();
+            }
+              
 
           const simplifiedRecords = table.records
             .filter(record => record.getValueByKey('ContractStatus') === 'Draft')
@@ -115,7 +142,7 @@ ipcMain.on('upload-file', (event, filePath) => {
 
           }));
 
-          console.log('Simplified records:', simplifiedRecords);
+          // console.log('Simplified records:', simplifiedRecords);
 
           // Send simplified records
           event.sender.send('player-data', simplifiedRecords);
@@ -127,6 +154,11 @@ ipcMain.on('upload-file', (event, filePath) => {
   } catch (error) {
     console.error('Error in upload-file listener:', error);
   }
+});
+
+
+app.on('before-quit', async () => {
+  await prisma.$disconnect();
 });
 
 
