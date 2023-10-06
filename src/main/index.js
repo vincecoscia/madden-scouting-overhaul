@@ -1,7 +1,10 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+const Franchise = require('madden-franchise')
+
+// let mainWindow
 
 function createWindow() {
   // Create the browser window.
@@ -56,6 +59,45 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+})
+
+// IPC listener for file uploads
+ipcMain.on('upload-file', (event, filePath) => {
+  console.log('Attempting to open file at:', filePath)
+
+  try {
+    let franchise = new Franchise(filePath)
+    console.log('Franchise object created:', !!franchise)
+
+    franchise.on('ready', function () {
+      console.log('Franchise is ready')
+      let playerTable = franchise.getTableByName('Player')
+      console.log('Player table obtained:', !!playerTable)
+
+      playerTable
+        .readRecords()
+        .then(function (table) {
+          console.log('Records read:', table.records.length)
+
+          // Simplify the records first
+          const simplifiedRecords = table.records.map((record) => ({
+            FirstName: record.getValueByKey('FirstName'),
+            LastName: record.getValueByKey('LastName')
+            // ... any other essential fields
+          }))
+
+          // Then, if needed, stringify the simplified records
+          const serializedData = JSON.stringify(simplifiedRecords);
+
+          event.sender.send('player-data', serializedData)
+        })
+        .catch((error) => {
+          console.error('Error reading records:', error)
+        })
+    })
+  } catch (error) {
+    console.error('Error in upload-file listener:', error)
+  }
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
