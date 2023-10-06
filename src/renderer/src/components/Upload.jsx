@@ -9,14 +9,26 @@ function Upload() {
       setPlayers(data)
     }
 
-    window.api.ipcRenderer.on('player-data', (event, data) => {
+    window.api.ipcRenderer.on('player-data', (data) => {
       // Ensure data exists and is an array
+      console.log('Received player data:', data)
       if (data && Array.isArray(data)) {
         setPlayers(data)
       } else {
         console.error('Received unexpected data:', data)
       }
     })
+    // window.api.ipcRenderer.on('player-data', (event, data) => {
+    //   console.log('Event:', event);
+    //   console.log('Data:', data);
+    
+    //   if (data) {
+    //     setPlayers(data);
+    //   } else {
+    //     console.error('Data is undefined');
+    //   }
+    // });
+    
 
     return () => {
       window.api.ipcRenderer.removeListener('player-data', handlePlayerData)

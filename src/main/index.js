@@ -9,8 +9,8 @@ const Franchise = require('madden-franchise')
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    width: 1920,
+    height: 1080,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
@@ -63,42 +63,72 @@ app.whenReady().then(() => {
 
 // IPC listener for file uploads
 ipcMain.on('upload-file', (event, filePath) => {
-  console.log('Attempting to open file at:', filePath)
+  console.log('Attempting to open file at:', filePath);
+
+  // Test with static data
+  event.sender.send('player-data', { test: 'This is a test' });
 
   try {
-    let franchise = new Franchise(filePath)
-    console.log('Franchise object created:', !!franchise)
+    let franchise = new Franchise(filePath);
+    console.log('Franchise object created:', !!franchise);
 
     franchise.on('ready', function () {
-      console.log('Franchise is ready')
-      let playerTable = franchise.getTableByName('Player')
-      console.log('Player table obtained:', !!playerTable)
+      console.log('Franchise is ready');
+      let playerTable = franchise.getTableByName('Player');
+      console.log('Player table obtained:', !!playerTable);
 
       playerTable
         .readRecords()
         .then(function (table) {
-          console.log('Records read:', table.records.length)
+          console.log('Records read:', table.records.length);
 
-          // Simplify the records first
-          const simplifiedRecords = table.records.map((record) => ({
-            FirstName: record.getValueByKey('FirstName'),
-            LastName: record.getValueByKey('LastName')
-            // ... any other essential fields
-          }))
+          const adjustPlayerWeights = (n) => {
+            if (n > 100) {
+              return 260 + (n - 100);
+            } else {
+              return 260 - (100 - n);
+            }
+          };
 
-          // Then, if needed, stringify the simplified records
-          const serializedData = JSON.stringify(simplifiedRecords);
 
-          event.sender.send('player-data', serializedData)
+
+          const simplifiedRecords = table.records
+            .filter(record => record.getValueByKey('ContractStatus') === 'Draft')
+            .map((record) => ({
+            FirstName: record.FirstName,
+            LastName: record.LastName,
+            ContractStatus: record.ContractStatus,
+            Tag1: record.Tag1,
+            Tag2: record.Tag2,
+            Motivation1: record.Motivation1,
+            Motivation2: record.Motivation2,
+            Motivation3: record.Motivation3,
+            ForcePass: record.TRAIT_FORCE_PASS,
+            Age: record.Age,
+            Height: record.Height,
+            Weight: adjustPlayerWeights(record.Weight),
+            OverallRating: record.OverallRating,
+            TraitDevelopment: record.TraitDevelopment,
+            OriginalHitPowerRating: record.OriginalHitPowerRating,
+            OriginalJumpingRating: record.OriginalJumpingRating,
+            AgilityRating: record.AgilityRating,
+
+          }));
+
+          console.log('Simplified records:', simplifiedRecords);
+
+          // Send simplified records
+          event.sender.send('player-data', simplifiedRecords);
         })
         .catch((error) => {
-          console.error('Error reading records:', error)
-        })
-    })
+          console.error('Error reading records:', error);
+        });
+    });
   } catch (error) {
-    console.error('Error in upload-file listener:', error)
+    console.error('Error in upload-file listener:', error);
   }
-})
+});
+
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
