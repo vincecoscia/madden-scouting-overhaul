@@ -12,11 +12,12 @@ datasource db {
 
 model Player {
   id        String      @id @default(cuid())
+  playerID  String      @unique
   firstName      String
   lastName       String
   season   Season?      @relation(fields: [seasonId], references: [id])
   seasonId String?
-  
+
   // ... other fields and relations
 }
 
