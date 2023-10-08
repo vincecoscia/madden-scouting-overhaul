@@ -92,12 +92,10 @@ ipcMain.on('upload-file', (event, filePath) => {
             }
           };
 
-          const addIndexToRecords = (records) => {
-            return records.map((record, index) => ({
-              ...record,
-              index,
-            }));
-          };
+          const indexedRecords = table.records.map((record, index) => ({
+            ...record,
+            index,
+          }));
 
           const prismaRecords = table.records
             .filter(record => record.getValueByKey('ContractStatus') === 'Draft')
