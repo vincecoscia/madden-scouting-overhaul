@@ -18,16 +18,6 @@ function Upload() {
         console.error('Received unexpected data:', data)
       }
     })
-    // window.api.ipcRenderer.on('player-data', (event, data) => {
-    //   console.log('Event:', event);
-    //   console.log('Data:', data);
-    
-    //   if (data) {
-    //     setPlayers(data);
-    //   } else {
-    //     console.error('Data is undefined');
-    //   }
-    // });
     
 
     return () => {

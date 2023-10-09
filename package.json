@@ -22,6 +22,7 @@
     "@prisma/client": "^5.4.1",
     "electron-updater": "^6.1.1",
     "madden-franchise": "^3.1.1",
+    "react-query": "^3.39.3",
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {

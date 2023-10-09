@@ -3,20 +3,27 @@ import { electronAPI } from '@electron-toolkit/preload'
 
 const safeIpcRenderer = {
   send: (channel, data) => {
-    let validChannels = ['channel1', 'channel2', 'upload-file'] // Define the channels you want to allow
+    let validChannels = ['channel1', 'channel2', 'upload-file', 'get-franchise', 'create-franchise'] // Define the channels you want to allow
     if (validChannels.includes(channel)) {
       ipcRenderer.send(channel, data)
     }
   },
   on: (channel, callback) => {
-    let validChannels = ['player-data'] // Define the channels you want to allow
+    let validChannels = ['player-data', 'get-franchise', 'create-franchise'] // Define the channels you want to allow
     if (validChannels.includes(channel)) {
       // Deliberately strip event as it includes `sender`
       ipcRenderer.on(channel, (event, ...args) => callback(...args))
     }
   },
+  handle: (channel, callback) => {
+    let validChannels = ['player-data', 'get-franchise', 'create-franchise'] // Define the channels you want to allow
+    if (validChannels.includes(channel)) {
+      // Deliberately strip event as it includes `sender`
+      ipcRenderer.handle(channel, (event, ...args) => callback(...args))
+    }
+  },
   removeListener: (channel, callback) => {
-    let validChannels = ['player-data'] // Define the channels you want to allow
+    let validChannels = ['player-data', 'get-franchise', 'create-franchise'] // Define the channels you want to allow
     if (validChannels.includes(channel)) {
       ipcRenderer.removeListener(channel, callback)
     }
