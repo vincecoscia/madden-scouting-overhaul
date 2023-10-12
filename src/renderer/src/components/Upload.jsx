@@ -18,16 +18,6 @@ function Upload() {
         console.error('Received unexpected data:', data)
       }
     })
-    // window.api.ipcRenderer.on('player-data', (event, data) => {
-    //   console.log('Event:', event);
-    //   console.log('Data:', data);
-    
-    //   if (data) {
-    //     setPlayers(data);
-    //   } else {
-    //     console.error('Data is undefined');
-    //   }
-    // });
     
 
     return () => {
@@ -53,11 +43,11 @@ function Upload() {
   return (
     <div>
       <h2>Upload Franchise File</h2>
-      <input type="file" onChange={handleFileSelection} />
-      <button onClick={handleSubmit}>Upload</button>
+      <input type="file" className='text-white' onChange={handleFileSelection} />
+      <button className="px-4 py-2 bg-slate-700 text-white" onClick={handleSubmit}>Upload</button>
 
-      <h3>Player Data:</h3>
-      <ul>
+      <h3 className="text-white">Player Data:</h3>
+      <ul className="text-white">
         {players.map((player) => (
           <li key={player.ID}>
             {player.FirstName} {player.LastName}

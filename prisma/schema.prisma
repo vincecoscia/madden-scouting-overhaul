@@ -1,0 +1,283 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Player {
+  id                       String        @id @default(cuid())
+  playerID                 String        @unique
+  firstName                String
+  lastName                 String
+  position                 String
+  college                  String
+  age                      Int
+  height                   Int
+  weight                   Int
+  overall                  Int
+  traitDevelopment         String
+  contractStatus           String
+  motivation1              String
+  motivation2              String
+  motivation3              String
+  hitPower                 Int
+  jumping                  Int
+  agility                  Int
+  acceleration             Int
+  kickPower                Int
+  kickAccuracy             Int
+  breakSack                Int
+  blockShed                Int
+  bcVision                 Int
+  awareness                Int
+  catchInTraffic           Int
+  catch                    Int
+  carrying                 Int
+  breakTackle              Int
+  deepRoute                Int
+  mediumRoute              Int
+  shortRoute               Int
+  confidence               Int
+  changeOfDirection        Int
+  impactBlocking           Int
+  finesseMoves             Int
+  powerMoves               Int
+  jukeMove                 Int
+  injury                   Int
+  kickReturn               Int
+  manCoverage              Int
+  longSnapping             Int
+  leadBlock                Int
+  press                    Int
+  runBlock                 Int
+  runBlockPower            Int
+  runBlockFinesse          Int
+  release                  Int
+  pursuit                  Int
+  speed                    Int
+  spectacularCatch         Int
+  strength                 Int
+  stiffArm                 Int
+  stamina                  Int
+  spinMove                 Int
+  throwAccuracy            Int
+  throwAccuracyShort       Int
+  throwAccuracyMid         Int
+  throwAccuracyDeep        Int
+  tackle                   Int
+  throwUnderPressure       Int
+  throwPower               Int
+  throwOnTheRun            Int
+  zoneCoverage             Int
+  trucking                 Int
+  toughness                Int
+  playAction               Int
+  passBlock                Int
+  passBlockPower           Int
+  passBlockFinesse         Int
+  isVisible                Boolean       @default(true)
+  proDayThreeConeDrill     Int
+  proDayTwentyYardShuttle  Int
+  proDayVerticalJump       Int
+  proDayFortyYardDash      Int
+  proDayBenchPress         Int
+  proDayBroadJump          Int
+  combineThreeConeDrill    Int
+  combineTwentyYardShuttle Int
+  combineVerticalJump      Int
+  combineFortyYardDash     Int
+  combineBenchPress        Int
+  combineBroadJump         Int
+  initialDraftRank         Int
+  trueOverallRanking       Int
+  combineOverallRanking    Int
+  productionGrade          Int
+  season                   Season?       @relation(fields: [seasonId], references: [id])
+  seasonId                 String?
+  franchise                Franchise?    @relation(fields: [franchiseId], references: [id])
+  franchiseId              String?
+  scoutingInfo             ScoutingInfo?
+  scoutingInfoId           String?
+  createdAt                DateTime      @default(now())
+  updatedAt                DateTime      @updatedAt
+
+  // ... other fields and relations
+}
+
+model Franchise {
+  id          String   @id @default(cuid())
+  name        String
+  team        String
+  description String
+  seasons     Season[]
+  players     Player[]
+  scouts      Scout[]
+  reports     Report[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Season {
+  id          String    @id @default(cuid())
+  name        String?
+  year        Int
+  week        Int
+  averageOvr  Int
+  franchise   Franchise @relation(fields: [franchiseId], references: [id])
+  franchiseId String
+  players     Player[]
+  scouts      Scout[]
+  report      Report?
+}
+
+model Scout {
+  id                  String         @id @default(cuid())
+  firstName           String
+  lastName            String
+  evaluation          Int
+  repuation           Int
+  specialty           String
+  bias                String
+  conferenceSpecialty String
+  cost                Int
+  hours               Int            @default(10)
+  remaining           Int            @default(10)
+  scoutingInfo        ScoutingInfo[]
+  season              Season?        @relation(fields: [seasonId], references: [id])
+  seasonId            String?
+  franchise           Franchise?     @relation(fields: [franchiseId], references: [id])
+  franchiseId         String?
+  // ... other fields and relations
+}
+
+model ScoutingInfo {
+  id                 String         @id @default(cuid())
+  hours              Int            @default(0)
+  percentComplete    Int            @default(0)
+  sparq              Int
+  comments           ScoutComment[]
+  player             Player         @relation(fields: [playerId], references: [id])
+  playerId           String         @unique
+  bucket             Bucket         @relation(fields: [bucketId], references: [id])
+  scout              Scout          @relation(fields: [scoutId], references: [id])
+  scoutId            String
+  height             Int
+  weight             Int
+  overall            Int
+  traitDevelopment   String
+  hitPower           Int
+  jumping            Int
+  agility            Int
+  acceleration       Int
+  kickPower          Int
+  kickAccuracy       Int
+  breakSack          Int
+  blockShed          Int
+  bcVision           Int
+  awareness          Int
+  catchInTraffic     Int
+  catch              Int
+  carrying           Int
+  breakTackle        Int
+  deepRoute          Int
+  mediumRoute        Int
+  shortRoute         Int
+  confidence         Int
+  changeOfDirection  Int
+  impactBlocking     Int
+  finesseMoves       Int
+  powerMoves         Int
+  jukeMove           Int
+  injury             Int
+  kickReturn         Int
+  manCoverage        Int
+  longSnapping       Int
+  leadBlock          Int
+  press              Int
+  runBlock           Int
+  runBlockPower      Int
+  runBlockFinesse    Int
+  release            Int
+  pursuit            Int
+  speed              Int
+  spectacularCatch   Int
+  strength           Int
+  stiffArm           Int
+  stamina            Int
+  spinMove           Int
+  throwAccuracy      Int
+  throwAccuracyShort Int
+  throwAccuracyMid   Int
+  throwAccuracyDeep  Int
+  tackle             Int
+  throwUnderPressure Int
+  throwPower         Int
+  throwOnTheRun      Int
+  zoneCoverage       Int
+  trucking           Int
+  toughness          Int
+  playAction         Int
+  passBlock          Int
+  passBlockPower     Int
+  passBlockFinesse   Int
+  bucketId           String
+}
+
+model ScoutComment {
+  id             String       @id @default(cuid())
+  comment        String
+  scoutingInfo   ScoutingInfo @relation(fields: [scoutingInfoId], references: [id])
+  scoutingInfoId String
+}
+
+model Report {
+  id             String     @id @default(cuid())
+  avgOverall     Int
+  offenseOverall Int
+  defenseOverall Int
+  sparqOverall   Int
+  qbOverall      Int
+  hbOverall      Int
+  fbOverall      Int
+  wrOverall      Int
+  teOverall      Int
+  ltOverall      Int
+  lgOverall      Int
+  cOverall       Int
+  rgOverall      Int
+  rtOverall      Int
+  leOverall      Int
+  reOverall      Int
+  dtOverall      Int
+  lolbOverall    Int
+  mlbOverall     Int
+  rolbOverall    Int
+  cbOverall      Int
+  fsOverall      Int
+  ssOverall      Int
+  kOverall       Int
+  pOverall       Int
+  season         Season     @relation(fields: [seasonId], references: [id])
+  seasonId       String     @unique
+  franchise      Franchise? @relation(fields: [franchiseId], references: [id])
+  franchiseId    String?
+}
+
+model Bucket {
+  id            String         @id @default(cuid())
+  position      String
+  relevantStats Stat[]
+  scoutingInfo  ScoutingInfo[]
+}
+
+model Stat {
+  id     String   @id @default(cuid())
+  name   String
+  bucket Bucket[]
+}
