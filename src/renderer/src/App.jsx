@@ -1,10 +1,14 @@
-import Upload from './components/Upload'
 import NFLlogo from './assets/logos/nfl.png'
-// import router
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Home from './pages/Home'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+// Components
+import Home from './pages/Home'
+import CreateFranchise from './pages/franchise/create'
 import FranchiseId from './pages/franchise/[id]'
+import SeasonId from './pages/season/[id]'
+import Upload from './components/Upload'
 
 const queryClient = new QueryClient()
 
@@ -25,23 +29,42 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-    <div className="bg-slate-950 h-screen w-full text-white">
-      <div className="flex items-center justify-center bg-red-700 fixed top-0 w-full">
-        <img src={NFLlogo} alt="Madden Scouting Overhaul" className="w-20" />
-        <h1 className="text-white text-7xl font-giorgio uppercase">Madden Scouting Overhaul</h1>
-      </div>
-      <div className="h-full flex">
-        <div className="mt-20">
-          <Router>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/upload" element={<Upload />} />
-              <Route path="/franchise/:id" element={ <FranchiseId/>} />
-            </Routes>
-          </Router>
+      <div className="bg-neutral-950 h-screen w-full text-white">
+        <div className="flex justify-between bg-neutral-900 fixed top-0 w-full py-3 px-3">
+          <div className="flex items-center">
+            <img src={NFLlogo} alt="Madden Scouting Overhaul" className="w-14 mr-2" />
+            <h1 className="text-white text-5xl font-giorgio uppercase mb-2">
+              Madden Scouting Overhaul
+            </h1>
+          </div>
+          <p className="sel self-center">Version: 0.0.1</p>
+        </div>
+        <div className="h-full flex">
+          <div className="mt-20 w-full">
+            <Router>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/upload" element={<Upload />} />
+                <Route path="/franchise/:id" element={<FranchiseId />} />
+                <Route path="/franchise/create" element={<CreateFranchise />} /> 
+                <Route path="/season/:id" element={<SeasonId />} />
+              </Routes>
+            </Router>
+          </div>
         </div>
       </div>
-    </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </QueryClientProvider>
   )
 }

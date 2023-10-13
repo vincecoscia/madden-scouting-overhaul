@@ -1,7 +1,21 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
-const validChannels = ['channel1', 'channel2', 'upload-file', 'get-franchise', 'create-franchise', 'get-franchises'] // Define the channels you want to expose to Electron, channels should match the ones in main.js
+const validChannels = [
+  'channel1',
+  'channel2',
+  'upload-file',
+  'get-franchise',
+  'create-franchise',
+  'get-franchises',
+  'update-franchise',
+  'delete-franchise',
+  'get-season',
+  'get-seasons',
+  'create-season',
+  'update-season',
+  'delete-season',
+] // Define the channels you want to expose to Electron, channels should match the ones in main.js
 
 const safeIpcRenderer = {
   send: (channel, data) => {

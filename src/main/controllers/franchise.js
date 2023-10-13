@@ -31,25 +31,50 @@ export function franchiseController() {
     }
   });
 
-  ipcMain.on('create-franchise', async (event, franchise) => {
+  ipcMain.handle('create-franchise', async (event, franchise) => {
     try {
       console.log('Received franchise:', franchise);
-      event.reply('create-franchise-response', { message: 'Franchise received' });  // Example response
       // Create franchise in database using Prisma
       const result = await prisma.franchise.create({
         data: franchise
       });
       console.log('Prisma create result:', result);
+      return result;
     } catch (error) {
       console.error('Error handling create-franchise:', error);
     }
   });
 
   ipcMain.handle('update-franchise', (event, franchise) => {
-
+    try {
+      console.log('Received franchise:', franchise);
+      // Update franchise in database using Prisma
+      const result = prisma.franchise.update({
+        where: {
+          id: franchise.id
+        },
+        data: franchise
+      });
+      console.log('Prisma update result:', result);
+      return result;
+    } catch (error) {
+      console.error('Error handling update-franchise:', error);
+    }
   });
 
   ipcMain.handle('delete-franchise', (event, franchiseId) => {
-
+    try {
+      console.log('Received franchiseId:', franchiseId);
+      // Delete franchise in database using Prisma
+      const result = prisma.franchise.delete({
+        where: {
+          id: franchiseId
+        }
+      });
+      console.log('Prisma delete result:', result);
+      return result;
+    } catch (error) {
+      console.error('Error handling delete-franchise:', error);
+    }
   });
 }

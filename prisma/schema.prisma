@@ -111,24 +111,26 @@ model Player {
 }
 
 model Franchise {
-  id          String   @id @default(cuid())
-  name        String
-  team        String
-  description String
-  seasons     Season[]
-  players     Player[]
-  scouts      Scout[]
-  reports     Report[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(cuid())
+  name         String
+  team         String
+  abbreviation String
+  description  String?
+  seasons      Season[]
+  players      Player[]
+  scouts       Scout[]
+  reports      Report[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Season {
   id          String    @id @default(cuid())
   name        String?
-  year        Int
+  year        Int      @default(2023)
   week        Int
-  averageOvr  Int
+  averageOvr  Int?
+  balance     Int
   franchise   Franchise @relation(fields: [franchiseId], references: [id])
   franchiseId String
   players     Player[]
