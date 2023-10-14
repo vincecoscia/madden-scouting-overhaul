@@ -261,8 +261,6 @@ ipcMain.on('upload-file', (event, filePath) => {
                 return 'New Mexico State'
               case 1975:
                 return 'Rice'
-              case 1960:
-                return 'Oregon'
               case 1944:
                 return 'North Texas'
               case 1862:
@@ -441,12 +439,8 @@ ipcMain.on('upload-file', (event, filePath) => {
                 return 'Delaware'
               case 2004:
                 return 'Southern Arkansas'
-              case 2036:
-                return 'Toledo'
               case 1848:
                 return 'Harvard'
-              case 2036:
-                return 'Toledo'
               case 1787:
                 return 'Central Arkansas'
               case 1751:
@@ -479,7 +473,7 @@ ipcMain.on('upload-file', (event, filePath) => {
               firstName: record.Firstname,
               lastName: record.LastName,
               position: record.Position,
-              college: assignCollege(record.College.substring(16)),
+              college: assignCollege(binaryToDecimal(record.College.substring(16))),
               age: record.Age,
               height: record.Height,
               weight: adjustPlayerWeights(record.Weight),
