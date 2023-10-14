@@ -15,6 +15,9 @@ const validChannels = [
   'create-season',
   'update-season',
   'delete-season',
+  'get-player',
+  'get-players',
+  'create-players',
 ] // Define the channels you want to expose to Electron, channels should match the ones in main.js
 
 const safeIpcRenderer = {

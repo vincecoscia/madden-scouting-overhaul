@@ -127,7 +127,7 @@ model Franchise {
 model Season {
   id          String    @id @default(cuid())
   name        String?
-  year        Int      @default(2023)
+  year        Int       @default(2023)
   week        Int
   averageOvr  Int?
   balance     Int
