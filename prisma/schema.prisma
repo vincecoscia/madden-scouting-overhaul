@@ -12,7 +12,7 @@ datasource db {
 
 model Player {
   id                       String        @id @default(cuid())
-  playerID                 String        @unique
+  playerID                 Int
   firstName                String
   lastName                 String
   position                 String
@@ -82,21 +82,21 @@ model Player {
   passBlockPower           Int
   passBlockFinesse         Int
   isVisible                Boolean       @default(true)
-  proDayThreeConeDrill     Int
-  proDayTwentyYardShuttle  Int
-  proDayVerticalJump       Int
-  proDayFortyYardDash      Int
-  proDayBenchPress         Int
-  proDayBroadJump          Int
-  combineThreeConeDrill    Int
-  combineTwentyYardShuttle Int
-  combineVerticalJump      Int
-  combineFortyYardDash     Int
-  combineBenchPress        Int
-  combineBroadJump         Int
+  proDayThreeConeDrill     Int?
+  proDayTwentyYardShuttle  Int?
+  proDayVerticalJump       Int?
+  proDayFortyYardDash      Int?
+  proDayBenchPress         Int?
+  proDayBroadJump          Int?
+  combineThreeConeDrill    Int?
+  combineTwentyYardShuttle Int?
+  combineVerticalJump      Int?
+  combineFortyYardDash     Int?
+  combineBenchPress        Int?
+  combineBroadJump         Int?
   initialDraftRank         Int
   trueOverallRanking       Int
-  combineOverallRanking    Int
+  combineOverallRanking    Int?
   productionGrade          Int
   season                   Season?       @relation(fields: [seasonId], references: [id])
   seasonId                 String?

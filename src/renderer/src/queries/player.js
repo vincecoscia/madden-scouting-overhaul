@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const getAllPlayers = async (seasonId) => {
-  const res = await window.api.ipcRenderer.invoke('get-players');
+  const res = await window.api.ipcRenderer.invoke('get-players', seasonId);
   console.log('getAllPlayers res:', res);
   return res;
 }
@@ -20,8 +20,10 @@ export const useGetPlayer = (playerId) => {
   return useQuery(['getPlayer', playerId], () => getPlayer(playerId));
 }
 
-const createPlayers = async (players) => {
-  const res = await window.api.ipcRenderer.invoke('create-players', players);
+const createPlayers = async ({players, seasonId}) => {
+  console.log('createPlayers players:', players);
+  console.log('createPlayers seasonId:', seasonId);
+  const res = await window.api.ipcRenderer.invoke('create-players', { filePath: players, seasonId: seasonId });
   console.log('createPlayers res:', res);
   return res;
 }
