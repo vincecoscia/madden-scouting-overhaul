@@ -1,0 +1,877 @@
+[
+  {
+    "id": 1886,
+    "school": "LSU",
+    "conference": "SEC"
+  },
+  {
+    "id": 1926,
+    "school": "N.C. State",
+    "conference": "ACC"
+  },
+  {
+    "id": 1842,
+    "school": "Georgia",
+    "conference": "SEC"
+  },
+  {
+    "id": 1746,
+    "school": "Alabama",
+    "conference": "SEC"
+  },
+  {
+    "id": 2030,
+    "school": "Texas",
+    "conference": "Big 12"
+  },
+  {
+    "id": 1904,
+    "school": "Minnesota",
+    "conference": "Big Ten"
+  },
+  {
+    "id": 1802,
+    "school": "Colorado",
+    "conference": "Pac-12"
+  },
+  {
+    "id": 2051,
+    "school": "USC",
+    "conference": "Pac-12"
+  },
+  {
+    "id": 1957,
+    "school": "Oklahoma",
+    "conference": "Big 12"
+  },
+  {
+    "id": 1906,
+    "school": "Mississippi State",
+    "conference": "SEC"
+  },
+  {
+    "id": 2014,
+    "school": "Stanford",
+    "conference": "Pac-12"
+  },
+  {
+    "id": 1754,
+    "school": "Arkansas",
+    "conference": "SEC"
+  },
+  {
+    "id": 1831,
+    "school": "Florida",
+    "conference": "SEC"
+  },
+  {
+    "id": 1950,
+    "school": "Notre Dame",
+    "conference": "Independent"
+  },
+  {
+    "id": 1961,
+    "school": "Oregon State",
+    "conference": "Pac-12"
+  },
+  {
+    "id": 2077,
+    "school": "Washington",
+    "conference": "Pac-12"
+  },
+  {
+    "id": 1864,
+    "school": "Iowa",
+    "conference": "Big Ten"
+  },
+  {
+    "id": 1965,
+    "school": "Penn State",
+    "conference": "Big Ten"
+  },
+  {
+    "id": 1833,
+    "school": "Florida State",
+    "conference": "ACC"
+  },
+  {
+    "id": 2075,
+    "school": "Washington State",
+    "conference": "Pac-12"
+  },
+  {
+    "id": 2046,
+    "school": "UCF",
+    "conference": "Big 12"
+  },
+  {
+    "id": 1885,
+    "school": "Louisville",
+    "conference": "ACC"
+  },
+  {
+    "id": 1901,
+    "school": "Michigan State",
+    "conference": "Big Ten"
+  },
+  {
+    "id": 1766,
+    "school": "Boise State",
+    "conference": "Mountain West"
+  },
+  {
+    "id": 2031,
+    "school": "Texas A&M",
+    "conference": "SEC"
+  },
+  {
+    "id": 1779,
+    "school": "California",
+    "conference": "Pac-12"
+  },
+  {
+    "id": 2047,
+    "school": "UCLA",
+    "conference": "Pac-12"
+  },
+  {
+    "id": 1898,
+    "school": "Miami",
+    "conference": "ACC"
+  },
+  {
+    "id": 1758,
+    "school": "Auburn",
+    "conference": "SEC"
+  },
+  {
+    "id": 1767,
+    "school": "Boston College",
+    "conference": "ACC"
+  },
+  {
+    "id": 1796,
+    "school": "Clemson",
+    "conference": "ACC"
+  },
+  {
+    "id": 2052,
+    "school": "USF",
+    "conference": "American Athletic (AAC)"
+  },
+  {
+    "id": 1991,
+    "school": "San Jose State",
+    "conference": "Mountain West"
+  },
+  {
+    "id": 2053,
+    "school": "Utah",
+    "conference": "Pac-12"
+  },
+  {
+    "id": 1948,
+    "school": "Northwestern",
+    "conference": "Big Ten"
+  },
+  {
+    "id": 2073,
+    "school": "Wake Forest",
+    "conference": "ACC"
+  },
+  {
+    "id": 1822,
+    "school": "Eastern Michigan",
+    "conference": "MAC (Mid-American)"
+  },
+  {
+    "id": 1865,
+    "school": "Iowa State",
+    "conference": "Big 12"
+  },
+  {
+    "id": 1956,
+    "school": "Ohio State",
+    "conference": "Big Ten"
+  },
+  {
+    "id": 1979,
+    "school": "Rutgers",
+    "conference": "Big Ten"
+  },
+  {
+    "id": 1774,
+    "school": "Butler",
+    "conference": "Pioneer Football League"
+  },
+  {
+    "id": 1900,
+    "school": "Michigan",
+    "conference": "Big Ten"
+  },
+  {
+    "id": 1933,
+    "school": "Nevada",
+    "conference": "Mountain West"
+  },
+  {
+    "id": 1959,
+    "school": "Ole Miss",
+    "conference": "SEC"
+  },
+  {
+    "id": 1820,
+    "school": "East Carolina",
+    "conference": "American Athletic (AAC)"
+  },
+  {
+    "id": 1872,
+    "school": "Kansas State",
+    "conference": "Big 12"
+  },
+  {
+    "id": 2062,
+    "school": "Virginia",
+    "conference": "ACC"
+  },
+  {
+    "id": 1941,
+    "school": "North Carolina",
+    "conference": "ACC"
+  },
+  {
+    "id": 1744,
+    "school": "Air Force",
+    "conference": "Mountain West"
+  },
+  {
+    "id": 2027,
+    "school": "Tennessee",
+    "conference": "SEC"
+  },
+  {
+    "id": 1837,
+    "school": "Fresno State",
+    "conference": "Mountain West"
+  },
+  {
+    "id": 2023,
+    "school": "TCU",
+    "conference": "Big 12"
+  },
+  {
+    "id": 1815,
+    "school": "Duke",
+    "conference": "ACC"
+  },
+  {
+    "id": 2092,
+    "school": "Wisconsin",
+    "conference": "Big Ten"
+  },
+  {
+    "id": 1871,
+    "school": "Kansas",
+    "conference": "Big 12"
+  },
+  {
+    "id": 2020,
+    "school": "Syracuse",
+    "conference": "ACC"
+  },
+  {
+    "id": 1859,
+    "school": "Illinois",
+    "conference": "Big Ten"
+  },
+  {
+    "id": 1999,
+    "school": "SMU",
+    "conference": "American Athletic (AAC)"
+  },
+  {
+    "id": 2001,
+    "school": "South Carolina",
+    "conference": "SEC"
+  },
+  {
+    "id": 2034,
+    "school": "Texas Tech",
+    "conference": "Big 12"
+  },
+  {
+    "id": 2088,
+    "school": "William & Mary",
+    "conference": "CAA"
+  },
+  {
+    "id": 1804,
+    "school": "Columbia",
+    "conference": "Ivy League"
+  },
+  {
+    "id": 1892,
+    "school": "Maryland",
+    "conference": "Big Ten"
+  },
+  {
+    "id": 2024,
+    "school": "Temple",
+    "conference": "American Athletic (AAC)"
+  },
+  {
+    "id": 1943,
+    "school": "North Dakota State",
+    "conference": "Missouri Valley Football"
+  },
+  {
+    "id": 1942,
+    "school": "North Dakota",
+    "conference": "Missouri Valley Football"
+  },
+  {
+    "id": 1960,
+    "school": "Oregon",
+    "conference": "Pac-12"
+  },
+  {
+    "id": 1850,
+    "school": "Hawaii",
+    "conference": "Mountain West"
+  },
+  {
+    "id": 1828,
+    "school": "FAU",
+    "conference": "Conference USA (C-USA)"
+  },
+  {
+    "id": 2060,
+    "school": "Vanderbilt",
+    "conference": "SEC"
+  },
+  {
+    "id": 2039,
+    "school": "Troy",
+    "conference": "Sun Belt"
+  },
+  {
+    "id": 1931,
+    "school": "Nebraska",
+    "conference": "Big Ten"
+  },
+  {
+    "id": 1839,
+    "school": "Georgia Southern",
+    "conference": "Sun Belt"
+  },
+  {
+    "id": 1935,
+    "school": "New Mexico State",
+    "conference": "Independent"
+  },
+  {
+    "id": 1975,
+    "school": "Rice",
+    "conference": "Conference USA (C-USA)"
+  },
+  {
+    "id": 1944,
+    "school": "North Texas",
+    "conference": "Conference USA (C-USA)"
+  },
+  {
+    "id": 1862,
+    "school": "Indiana State",
+    "conference": "Missouri Valley Football"
+  },
+  {
+    "id": 1843,
+    "school": "Georgia Tech",
+    "conference": "ACC"
+  },
+  {
+    "id": 2081,
+    "school": "West Virginia",
+    "conference": "Big 12"
+  },
+  {
+    "id": 1902,
+    "school": "Middle Tennessee State",
+    "conference": "Conference USA (C-USA)"
+  },
+  {
+    "id": 1857,
+    "school": "Idaho",
+    "conference": "Big Sky"
+  },
+  {
+    "id": 1855,
+    "school": "Houston",
+    "conference": "American Athletic (AAC)"
+  },
+  {
+    "id": 1895,
+    "school": "Memphis",
+    "conference": "American Athletic (AAC)"
+  },
+  {
+    "id": 1775,
+    "school": "BYU",
+    "conference": "Independent"
+  },
+  {
+    "id": 1764,
+    "school": "Bethune-Cookman",
+    "conference": "Southwestern Athletic (SWAC)"
+  },
+  {
+    "id": 1964,
+    "school": "Penn",
+    "conference": "Ivy League"
+  },
+  {
+    "id": 1803,
+    "school": "Colorado State",
+    "conference": "Mountain West"
+  },
+  {
+    "id": 2096,
+    "school": "Yale",
+    "conference": "Ivy League"
+  },
+  {
+    "id": 1861,
+    "school": "Indiana",
+    "conference": "Big Ten"
+  },
+  {
+    "id": 1907,
+    "school": "Missouri",
+    "conference": "SEC"
+  },
+  {
+    "id": 1982,
+    "school": "Southern Illinois",
+    "conference": "Missouri Valley Football"
+  },
+  {
+    "id": 1845,
+    "school": "Grand Valley State",
+    "conference": "Great Lakes Intercollegiate Athletic (GLIAC)"
+  },
+  {
+    "id": 1805,
+    "school": "Connecticut",
+    "conference": "Independent"
+  },
+  {
+    "id": 1936,
+    "school": "New Mexico",
+    "conference": "Mountain West"
+  },
+  {
+    "id": 1756,
+    "school": "Arkansas State",
+    "conference": "Sun Belt"
+  },
+  {
+    "id": 1772,
+    "school": "Buffalo",
+    "conference": "MAC (Mid-American)"
+  },
+  {
+    "id": 1888,
+    "school": "Maine",
+    "conference": "CAA"
+  },
+  {
+    "id": 2068,
+    "school": "W. Kentucky",
+    "conference": "Conference USA (C-USA)"
+  },
+  {
+    "id": 1954,
+    "school": "Ohio",
+    "conference": "MAC (Mid-American)"
+  },
+  {
+    "id": 1874,
+    "school": "Kentucky",
+    "conference": "SEC"
+  },
+  {
+    "id": 1958,
+    "school": "Oklahoma State",
+    "conference": "Big 12"
+  },
+  {
+    "id": 1788,
+    "school": "Central Michigan",
+    "conference": "MAC (Mid-American)"
+  },
+  {
+    "id": 1761,
+    "school": "Ball State",
+    "conference": "MAC (Mid-American)"
+  },
+  {
+    "id": 1887,
+    "school": "Mississippi Valley State",
+    "conference": "Southwestern Athletic (SWAC)"
+  },
+  {
+    "id": 2002,
+    "school": "South Dakota",
+    "conference": "Missouri Valley Football"
+  },
+  {
+    "id": 2095,
+    "school": "Wyoming",
+    "conference": "Mountain West"
+  },
+  {
+    "id": 1841,
+    "school": "Georgetown",
+    "conference": "Patriot League"
+  },
+  {
+    "id": 1752,
+    "school": "Arizona",
+    "conference": "Pac-12"
+  },
+  {
+    "id": 1988,
+    "school": "Sam Houston",
+    "conference": "Western Athletic (WAC)"
+  },
+  {
+    "id": 1925,
+    "school": "Northern Illinois",
+    "conference": "MAC (Mid-American)"
+  },
+  {
+    "id": 1893,
+    "school": "Massachusetts",
+    "conference": "Independent"
+  },
+  {
+    "id": 1873,
+    "school": "Kent State",
+    "conference": "MAC (Mid-American)"
+  },
+  {
+    "id": 2097,
+    "school": "Youngstown State",
+    "conference": "Missouri Valley Football"
+  },
+  {
+    "id": 1762,
+    "school": "Baylor",
+    "conference": "Big 12"
+  },
+  {
+    "id": 1918,
+    "school": "Mount Union",
+    "conference": "Ohio Athletic (OAC)"
+  },
+  {
+    "id": 1793,
+    "school": "Cincinnati",
+    "conference": "American Athletic (AAC)"
+  },
+  {
+    "id": 2042,
+    "school": "Tulsa",
+    "conference": "American Athletic (AAC)"
+  },
+  {
+    "id": 2041,
+    "school": "Tulane",
+    "conference": "American Athletic (AAC)"
+  },
+  {
+    "id": 1983,
+    "school": "South Carolina State",
+    "conference": "Mid-Eastern Athletic (MEAC)"
+  },
+  {
+    "id": 1899,
+    "school": "Miami of Ohio",
+    "conference": "MAC (Mid-American)"
+  },
+  {
+    "id": 1768,
+    "school": "Bowling Green State",
+    "conference": "MAC (Mid-American)"
+  },
+  {
+    "id": 2048,
+    "school": "UL Lafayette",
+    "conference": "Sun Belt"
+  },
+  {
+    "id": 1976,
+    "school": "Richmond",
+    "conference": "CAA"
+  },
+  {
+    "id": 1814,
+    "school": "Drake",
+    "conference": "Pioneer Football League"
+  },
+  {
+    "id": 1883,
+    "school": "Liberty",
+    "conference": "Independent"
+  },
+  {
+    "id": 2055,
+    "school": "UTEP",
+    "conference": "Conference USA (C-USA)"
+  },
+  {
+    "id": 2063,
+    "school": "Virginia Tech",
+    "conference": "ACC"
+  },
+  {
+    "id": 2045,
+    "school": "UAB",
+    "conference": "Conference USA (C-USA)"
+  },
+  {
+    "id": 1968,
+    "school": "Pittsburgh",
+    "conference": "ACC"
+  },
+  {
+    "id": 1745,
+    "school": "Akron",
+    "conference": "MAC (Mid-American)"
+  },
+  {
+    "id": 1753,
+    "school": "Arizona State",
+    "conference": "Pac-12"
+  },
+  {
+    "id": 1830,
+    "school": "FIU",
+    "conference": "Conference USA (C-USA)"
+  },
+  {
+    "id": 1824,
+    "school": "Eastern Washington",
+    "conference": "Big Sky"
+  },
+  {
+    "id": 1934,
+    "school": "New Hampshire",
+    "conference": "CAA"
+  },
+  {
+    "id": 1812,
+    "school": "Delaware State",
+    "conference": "Mid-Eastern Athletic (MEAC)"
+  },
+  {
+    "id": 1912,
+    "school": "Montana",
+    "conference": "Big Sky"
+  },
+  {
+    "id": 1946,
+    "school": "Northern Iowa",
+    "conference": "Missouri Valley Football"
+  },
+  {
+    "id": 1971,
+    "school": "Purdue",
+    "conference": "Big Ten"
+  },
+  {
+    "id": 1832,
+    "school": "Florida A&M",
+    "conference": "Southwestern Athletic (SWAC)"
+  },
+  {
+    "id": 1757,
+    "school": "Army",
+    "conference": "Independent"
+  },
+  {
+    "id": 1928,
+    "school": "Navy",
+    "conference": "American Athletic (AAC)"
+  },
+  {
+    "id": 1860,
+    "school": "Illinois State",
+    "conference": "Missouri Valley Football"
+  },
+  {
+    "id": 1879,
+    "school": "Lafayette",
+    "conference": "Patriot League"
+  },
+  {
+    "id": 1882,
+    "school": "Lehigh",
+    "conference": "Patriot League"
+  },
+  {
+    "id": 1858,
+    "school": "Idaho State",
+    "conference": "Big Sky"
+  },
+  {
+    "id": 2054,
+    "school": "Utah State",
+    "conference": "Mountain West"
+  },
+  {
+    "id": 1878,
+    "school": "LA Tech",
+    "conference": "Conference USA (C-USA)"
+  },
+  {
+    "id": 2028,
+    "school": "Tennessee State",
+    "conference": "Ohio Valley (OVC)"
+  },
+  {
+    "id": 1970,
+    "school": "Princeton",
+    "conference": "Ivy League"
+  },
+  {
+    "id": 7762,
+    "school": "UTSA",
+    "conference": "Conference USA (C-USA)"
+  },
+  {
+    "id": 2049,
+    "school": "UL Monroe",
+    "conference": "Sun Belt"
+  },
+  {
+    "id": 2036,
+    "school": "Toledo",
+    "conference": "MAC (Mid-American)"
+  },
+  {
+    "id": 1981,
+    "school": "South Dakota State",
+    "conference": "Missouri Valley Football"
+  },
+  {
+    "id": 2069,
+    "school": "W. Michigan",
+    "conference": "MAC (Mid-American)"
+  },
+  {
+    "id": 1791,
+    "school": "Charleston Southern",
+    "conference": "Big South"
+  },
+  {
+    "id": 59066,
+    "school": "South Alabama",
+    "conference": "Sun Belt"
+  },
+  {
+    "id": 2050,
+    "school": "UNLV",
+    "conference": "Mountain West"
+  },
+  {
+    "id": 1891,
+    "school": "Marshall",
+    "conference": "Conference USA (C-USA)"
+  },
+  {
+    "id": 2080,
+    "school": "West Georgia",
+    "conference": "Gulf South (GSC)"
+  },
+  {
+    "id": 2061,
+    "school": "Villanova",
+    "conference": "CAA"
+  },
+  {
+    "id": 2005,
+    "school": "Southern Miss",
+    "conference": "Conference USA (C-USA)"
+  },
+  {
+    "id": 1984,
+    "school": "San Diego State",
+    "conference": "Mountain West"
+  },
+  {
+    "id": 1811,
+    "school": "Delaware",
+    "conference": "CAA"
+  },
+  {
+    "id": 2004,
+    "school": "Southern Arkansas",
+    "conference": "Great American (GAC)"
+  },
+  {
+    "id": 1848,
+    "school": "Harvard",
+    "conference": "Ivy League"
+  },
+  {
+    "id": 1787,
+    "school": "Central Arkansas",
+    "conference": "ASUN"
+  },
+  {
+    "id": 1751,
+    "school": "Appalachian State",
+    "conference": "Sun Belt"
+  },
+  {
+    "id": 1974,
+    "school": "Rhode Island",
+    "conference": "CAA"
+  },
+  {
+    "id": 2006,
+    "school": "Southern Utah",
+    "conference": "Big Sky"
+  },
+  {
+    "id": 1829,
+    "school": "Ferris State",
+    "conference": "Great Lakes Intercollegiate Athletic (GLIAC)"
+  },
+  {
+    "id": 33353,
+    "school": "Charlotte",
+    "conference": "Conference USA (C-USA)"
+  },
+  {
+    "id": 1869,
+    "school": "Jacksonville State",
+    "conference": "ASUN"
+  },
+  {
+    "id": 2033,
+    "school": "Texas State",
+    "conference": "Sun Belt"
+  },
+  {
+    "id": 1810,
+    "school": "Dayton",
+    "conference": "Pioneer Football League"
+  },
+  {
+    "id": 2032,
+    "school": "Texas Southern",
+    "conference": "Southwestern Athletic (SWAC)"
+  }
+]

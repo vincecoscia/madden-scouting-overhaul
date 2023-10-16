@@ -43,6 +43,17 @@ export function seasonController() {
       const result = await prisma.season.create({
         data: season
       });
+      
+      // Update franchise updatedAt timestamp to current time
+
+      await prisma.franchise.update({
+        where: {
+          id: season.franchiseId
+        },
+        data: {
+          updatedAt: new Date()
+        }
+      });
       console.log('Prisma create result:', result);
       return result;
     } catch (error) {

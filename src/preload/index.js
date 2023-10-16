@@ -18,6 +18,18 @@ const validChannels = [
   'get-player',
   'get-players',
   'create-players',
+  'update-player',
+  'delete-player',
+  'get-scout',
+  'get-scouts-by-season',
+  'get-scouts-by-franchise',
+  'create-scout',
+  'hire-scout-for-season',
+  'update-scout',
+  'delete-scout',
+  'fire-scout-from-season',
+  'generate-scouts',
+
 ] // Define the channels you want to expose to Electron, channels should match the ones in main.js
 
 const safeIpcRenderer = {

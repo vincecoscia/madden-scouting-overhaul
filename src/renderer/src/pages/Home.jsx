@@ -99,15 +99,17 @@ function Home() {
               <NavLink
                 key={franchise.id}
                 to={`/franchise/${franchise.id}`}
-                className="pl-4 pr-6 py-2 bg-slate-600 rounded hover:bg-slate-500 flex justify-center items-center space-x-2"
-
+                className="pl-4 pr-6 py-2 bg-slate-600 rounded hover:bg-slate-500 "
               >
-                <img
-                  className="w-10"
-                  src={logos[franchise.abbreviation.toLowerCase()]}
-                  alt={`${franchise.name} Logo`}
-                />
-                <p className="text-xl">{franchise.name}</p>
+                <div className="flex justify-center items-center space-x-2">
+                  <img
+                    className="w-10"
+                    src={logos[franchise.abbreviation.toLowerCase()]}
+                    alt={`${franchise.name} Logo`}
+                  />
+                  <p className="text-xl">{franchise.name}</p>
+                </div>
+                <p className="text-xs font-light">{franchise.updatedAt.toLocaleString()}</p>
               </NavLink>
             ))}
           </div>

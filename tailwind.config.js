@@ -4,7 +4,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        giorgio: ['GiorgioSans', 'sans-serif']
+        giorgio: ['GiorgioSans', 'sans-serif'],
+        kanit: ['Kanit', 'sans-serif']
       }
     }
   },

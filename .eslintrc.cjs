@@ -7,3 +7,4 @@ module.exports = {
     '@electron-toolkit/eslint-config-prettier'
   ]
 }
+ 

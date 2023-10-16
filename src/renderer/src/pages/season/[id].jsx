@@ -587,6 +587,7 @@ function SeasonId() {
   if (!players || players.length === 0) {
     return (
       <div>
+        <BackButton />
         <h2>No Players Found - Upload Franchise File</h2>
         <input type="file" className="text-white" onChange={handleFileSelection} />
         <button className="px-4 py-2 bg-slate-700 text-white" onClick={handleSubmit}>

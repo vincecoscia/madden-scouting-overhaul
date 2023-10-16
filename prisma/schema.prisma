@@ -17,6 +17,7 @@ model Player {
   lastName                 String
   position                 String
   college                  String
+  conference               String
   age                      Int
   height                   Int
   weight                   Int
@@ -104,6 +105,8 @@ model Player {
   franchiseId              String?
   scoutingInfo             ScoutingInfo?
   scoutingInfoId           String?
+  report                   Report?       @relation(fields: [reportId], references: [id])
+  reportId                 String?
   createdAt                DateTime      @default(now())
   updatedAt                DateTime      @updatedAt
 
@@ -111,17 +114,21 @@ model Player {
 }
 
 model Franchise {
-  id           String   @id @default(cuid())
-  name         String
-  team         String
-  abbreviation String
-  description  String?
-  seasons      Season[]
-  players      Player[]
-  scouts       Scout[]
-  reports      Report[]
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id             String   @id @default(cuid())
+  name           String
+  team           String
+  abbreviation   String
+  description    String?
+  playersScouted Int      @default(0)
+  level          Int      @default(0)
+  xp             Int      @default(0)
+  xpNextLevel    Int      @default(100)
+  seasons        Season[]
+  players        Player[]
+  scouts         Scout[]
+  reports        Report[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model Season {
@@ -143,16 +150,24 @@ model Scout {
   firstName           String
   lastName            String
   evaluation          Int
-  repuation           Int
+  reputation          Int
   specialty           String
   bias                String
   conferenceSpecialty String
+  isNationalScout     Boolean        @default(false)
   cost                Int
-  hours               Int            @default(10)
-  remaining           Int            @default(10)
+  evalXp              Int
+  evalNextLevel       Int
+  hasUpgrade          Boolean        @default(false)
+  isMaxEvalLevel      Boolean        @default(false)
+  reputationXp        Int
+  reputationNextLevel Int
+  isMaxRepLevel       Boolean        @default(false)
+  hours               Int            @default(40)
+  remaining           Int            @default(40)
+  playersScouted      Int            @default(0)
   scoutingInfo        ScoutingInfo[]
-  season              Season?        @relation(fields: [seasonId], references: [id])
-  seasonId            String?
+  season              Season[]
   franchise           Franchise?     @relation(fields: [franchiseId], references: [id])
   franchiseId         String?
   // ... other fields and relations
@@ -239,36 +254,37 @@ model ScoutComment {
 }
 
 model Report {
-  id             String     @id @default(cuid())
-  avgOverall     Int
-  offenseOverall Int
-  defenseOverall Int
-  sparqOverall   Int
-  qbOverall      Int
-  hbOverall      Int
-  fbOverall      Int
-  wrOverall      Int
-  teOverall      Int
-  ltOverall      Int
-  lgOverall      Int
-  cOverall       Int
-  rgOverall      Int
-  rtOverall      Int
-  leOverall      Int
-  reOverall      Int
-  dtOverall      Int
-  lolbOverall    Int
-  mlbOverall     Int
-  rolbOverall    Int
-  cbOverall      Int
-  fsOverall      Int
-  ssOverall      Int
-  kOverall       Int
-  pOverall       Int
-  season         Season     @relation(fields: [seasonId], references: [id])
-  seasonId       String     @unique
-  franchise      Franchise? @relation(fields: [franchiseId], references: [id])
-  franchiseId    String?
+  id                             String     @id @default(cuid())
+  avgOverall                     Int
+  offenseOverall                 Int
+  defenseOverall                 Int
+  sparqOverall                   Int
+  qbOverall                      Int
+  hbOverall                      Int
+  fbOverall                      Int
+  wrOverall                      Int
+  teOverall                      Int
+  ltOverall                      Int
+  lgOverall                      Int
+  cOverall                       Int
+  rgOverall                      Int
+  rtOverall                      Int
+  leOverall                      Int
+  reOverall                      Int
+  dtOverall                      Int
+  lolbOverall                    Int
+  mlbOverall                     Int
+  rolbOverall                    Int
+  cbOverall                      Int
+  fsOverall                      Int
+  ssOverall                      Int
+  kOverall                       Int
+  pOverall                       Int
+  potentiallyGenerationalPlayers Player[]
+  season                         Season     @relation(fields: [seasonId], references: [id])
+  seasonId                       String     @unique
+  franchise                      Franchise? @relation(fields: [franchiseId], references: [id])
+  franchiseId                    String?
 }
 
 model Bucket {

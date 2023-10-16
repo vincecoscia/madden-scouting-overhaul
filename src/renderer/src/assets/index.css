@@ -2,15 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face{
+  font-family: Kanit;
+  src: url(./fonts/Kanit-Regular.ttf);
+}
 /* Set main font */
 html {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Kanit', sans-serif;
 }
 
 @font-face {
   font-family: GiorgioSans;
   src: url(./fonts/GiorgioSans-Black.otf);
 }
+
 
 .lds-ring {
   display: inline-block;
