@@ -15,7 +15,7 @@ export const SeasonProspects = (props) => {
     setActiveTab(tab)
 
     if (tab === 'all') {
-       setFilteredPlayers(players)
+      setFilteredPlayers(players)
     } else {
       setFilteredPlayers(players.filter((player) => player.position === tab))
     }
@@ -63,8 +63,6 @@ export const SeasonProspects = (props) => {
     setIsFilterByOpen(false)
     setFilterBy(filter)
   }
-
-
 
   const filterPlayersByInput = (input) => {
     if (input === '') {
@@ -129,9 +127,25 @@ export const SeasonProspects = (props) => {
     return `${feet}' ${remainingInches}"`
   }
 
+  const determineSparqColor = (sparq) => {
+    if (sparq > 90) {
+      return 'fill-amber-500'
+    } else if (sparq > 85) {
+      return 'fill-green-500'
+    } else if (sparq > 80) {
+      return 'fill-blue-500'
+    } else if (sparq > 75) {
+      return 'fill-purple-500'
+    } else if (sparq > 70) {
+      return 'fill-pink-500'
+    } else {
+      return 'fill-red-500'
+    }
+  }
+
   return (
     <>
-      <div className='mb-2'>
+      <div className="mb-2">
         <ul className="flex flex-wrap text-sm font-medium text-center border-b border-gray-700 text-gray-400">
           <li className="mr-2">
             <p
@@ -387,111 +401,110 @@ export const SeasonProspects = (props) => {
           value={inputFilter}
           onChange={handleInputFilter}
         /> */}
-          <div className="flex relative pl-8">
-            <button
-              id="dropdown-button"
-              data-dropdown-toggle="dropdown"
-              className="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
-              type="button"
-              onClick={() => setIsFilterByOpen(!isFilterByOpen)}
+        <div className="flex relative pl-8">
+          <button
+            id="dropdown-button"
+            data-dropdown-toggle="dropdown"
+            className="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+            type="button"
+            onClick={() => setIsFilterByOpen(!isFilterByOpen)}
+          >
+            All{' '}
+            <svg
+              className="w-2.5 h-2.5 ml-2.5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 10 6"
             >
-              All{' '}
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m1 1 4 4 4-4"
+              />
+            </svg>
+          </button>
+          <div
+            id="dropdown"
+            className={
+              `z-10 divide-y divide-gray-100 rounded-lg shadow w-44 bg-blue-900 absolute top-12` +
+              (isFilterByOpen ? ' block' : ' hidden')
+            }
+          >
+            <ul className="py-2 text-sm text-gray-200" aria-labelledby="dropdown-button">
+              <li>
+                <button
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-600 hover:text-white"
+                  onClick={() => handleFilterBy('all')}
+                >
+                  All
+                </button>
+              </li>
+              <li>
+                <button
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-600 hover:text-white"
+                  onClick={() => handleFilterBy('firstName')}
+                >
+                  First Name
+                </button>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Images
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  News
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Finance
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div className="relative w-full">
+            <input
+              type="search"
+              id="search-dropdown"
+              className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-100 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+              placeholder="Search"
+              required
+            />
+            <button
+              type="submit"
+              className="absolute top-0 right-0 p-2.5 h-full text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
               <svg
-                className="w-2.5 h-2.5 ml-2.5"
-                aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
-                viewBox="0 0 10 6"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-4 h-4"
               >
                 <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="m1 1 4 4 4-4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z"
                 />
               </svg>
             </button>
-            <div
-              id="dropdown"
-              className={`z-10 divide-y divide-gray-100 rounded-lg shadow w-44 bg-blue-900 absolute top-12` + (isFilterByOpen ? ' block' : ' hidden')}
-            >
-              <ul
-                className="py-2 text-sm text-gray-200"
-                aria-labelledby="dropdown-button"
-              >
-                                <li>
-                  <button
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-600 hover:text-white"
-                    onClick={() => handleFilterBy('all')}
-                  >
-                    All
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-600 hover:text-white"
-                    onClick={() => handleFilterBy('firstName')}
-                  >
-                    First Name
-                  </button>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Images
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    News
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Finance
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="relative w-full">
-              <input
-                type="search"
-                id="search-dropdown"
-                className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-100 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                placeholder="Search"
-                required
-              />
-              <button
-                type="submit"
-                className="absolute top-0 right-0 p-2.5 h-full text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-4 h-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z"
-                  />
-                </svg>
-              </button>
-            </div>
           </div>
-
+        </div>
       </div>
 
       {/* Add sorting for players here */}
@@ -537,12 +550,12 @@ export const SeasonProspects = (props) => {
         {filteredPlayers.map((player) => (
           <div className="flex rounded bg-neutral-900">
             <div className="border-r border-gray-600 flex justify-center items-center w-28">
-              <p className='text-2xl'>{player.initialDraftRank}</p>
+              <p className="text-2xl">{player.initialDraftRank}</p>
             </div>
             <div className="flex ml-8 w-96 pr-8 border-r border-gray-600">
               <Portrait id={player.portrait} />
               <div className=" flex flex-col justify-center py-2 ml-8">
-                <p className='text-xl font-semibold'>
+                <p className="text-xl font-semibold">
                   {player.firstName} {player.lastName}
                 </p>
                 <p>
@@ -550,13 +563,28 @@ export const SeasonProspects = (props) => {
                 </p>
               </div>
             </div>
-            <div className='flex justify-center items-center w-24 border-r border-gray-600'>
-              <p className='text-3xl font-semibold'>{player.position}</p>
+            <div className="flex justify-center items-center w-24 border-r border-gray-600">
+              <p className="text-3xl font-semibold">{player.position}</p>
             </div>
             <div className="flex flex-col justify-center w-24 items-center border-r border-gray-600">
-              <p className='text-xl font-semibold'>{convertInchesToFeet(player.height)}</p>
-              <p className='text-2xl'>{player.weight}</p>
-              </div>
+              <p className="text-xl font-semibold">{convertInchesToFeet(player.height)}</p>
+              <p className="text-2xl">{player.weight}</p>
+            </div>
+            <div className="flex flex-col justify-center w-24 items-center border-r border-gray-600 relative">
+              <svg
+                fill="#000000"
+                className={`h-16 w-16 absolute top-50% right-50% stroke-slate-50 stroke-2 rotate-90 ${determineSparqColor(player.sparq)}`}
+                version="1.1"
+                id="Capa_1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                viewBox="0 0 184.751 184.751"
+                xml:space="preserve"
+              >
+                <path d="M0,92.375l46.188-80h92.378l46.185,80l-46.185,80H46.188L0,92.375z" />
+              </svg>
+              <p className="text-2xl z-10 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">{player.sparq}</p>
+            </div>
           </div>
         ))}
       </div>

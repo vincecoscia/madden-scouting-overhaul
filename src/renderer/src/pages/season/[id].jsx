@@ -150,7 +150,7 @@ function SeasonId() {
     <div className="mx-8 mt-4">
       <BackButton />
 
-      <div className="flex gap-x-4 mt-8">
+      <div className="flex gap-x-4 mt-4 mb-4">
         <button
           className={`px-6 py-2 ${
             activeTab === 'overview' ? 'text-white border-b-2 border-blue-700' : 'text-gray-500'

@@ -1,0 +1,47 @@
+[
+  {
+    "position": "QB",
+    "relevantStats": [
+      "awareness",
+      "breakSack",
+      "throwAccuracy",
+      "throwAccuracyDeep",
+      "throwAccuracyMid",
+      "throwAccuracyShort",
+      "throwOnTheRun",
+      "throwPower",
+      "throwUnderPressure",
+      "playAction"
+    ]
+  },
+  {
+    "position": "S",
+    "relevantStats": [
+      "awareness",
+      "hitPower",
+      "catching",
+      "catchInTraffic",
+      "press",
+      "pursuit",
+      "tackle",
+      "zoneCoverage",
+      "manCoverage"
+    ]
+  },
+  {
+    "position": "OL",
+    "relevantStats": [
+      "awareness",
+      "impactBlocking",
+      "runBlockPower",
+      "runBlockFinesse",
+      "runBlock",
+      "passBlockFinesse",
+      "passBlockPower",
+      "passBlock"
+    ]
+  },
+  {
+    
+  }
+]
