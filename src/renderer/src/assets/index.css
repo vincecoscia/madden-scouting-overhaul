@@ -52,3 +52,40 @@ html {
     transform: rotate(360deg);
   }
 }
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 17px;
+  /* margin-top: 48px; */
+
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  /* margin-top: 37px; */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #4a5362;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #1a72ff;
+}
+
+.image-container {
+  width: 6rem; /* Adjust as needed */
+  height: 6rem; /* Adjust as needed */
+  position: relative;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

@@ -23,6 +23,7 @@
     "@tanstack/react-table": "^8.10.7",
     "electron-updater": "^6.1.1",
     "madden-franchise": "^3.1.1",
+    "react-dropzone": "^14.2.3",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.16.0",
     "react-table": "^7.8.0",

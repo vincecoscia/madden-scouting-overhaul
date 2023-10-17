@@ -14,6 +14,7 @@ model Player {
   id                       String        @id @default(cuid())
   playerID                 Int
   firstName                String
+  portrait                 Int
   lastName                 String
   position                 String
   college                  String
@@ -22,6 +23,7 @@ model Player {
   height                   Int
   weight                   Int
   overall                  Int
+  sparq                    Int
   traitDevelopment         String
   contractStatus           String
   motivation1              String
@@ -99,6 +101,9 @@ model Player {
   trueOverallRanking       Int
   combineOverallRanking    Int?
   productionGrade          Int
+  isFavorite               Boolean       @default(false)
+  isScouted                Boolean       @default(false)
+  isTargeted               Boolean       @default(false)
   season                   Season?       @relation(fields: [seasonId], references: [id])
   seasonId                 String?
   franchise                Franchise?    @relation(fields: [franchiseId], references: [id])

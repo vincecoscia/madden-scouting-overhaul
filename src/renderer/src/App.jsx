@@ -37,7 +37,7 @@ function App() {
               Madden Scouting Overhaul
             </h1>
           </div>
-          <p className="sel self-center">Version: 0.0.1</p>
+          <p className="sel self-center">Version: 0.0.2</p>
         </div>
         <div className="h-full flex">
           <div className="mt-20 w-full">

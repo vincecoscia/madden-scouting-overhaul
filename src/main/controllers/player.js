@@ -43,12 +43,18 @@ export function playerController() {
     try {
       console.log('Received get-players request')
       console.log('seasonId:', seasonId)
-      // Get players by season from database using Prisma
+      // Get players by season from database using Prisma and sort by overall initialDraftRank
+
       const players = await prisma.player.findMany({
         where: {
           seasonId: seasonId
-        }
-      })
+        },
+        orderBy: [
+          {
+            initialDraftRank: 'asc'
+          }
+        ]
+      });
       // console.log('Prisma players result:', players);
       return players
     } catch (error) {
@@ -114,6 +120,7 @@ export function playerController() {
             firstName: record.FirstName,
             lastName: record.LastName,
             position: record.Position,
+            portrait: record.PLYR_PORTRAIT,
             college: assignCollege(binaryToDecimal(record.College.substring(16))),
             conference: assignConference(binaryToDecimal(record.College.substring(16))),
             age: record.Age,
@@ -250,12 +257,23 @@ export function playerController() {
             firstName: record.firstName,
             lastName: record.lastName,
             position: record.position,
+            portrait: record.portrait,
             college: record.college,
             conference: record.conference,
             age: record.age,
             height: record.height,
             weight: record.weight,
             overall: record.overall,
+            // Get average of speed, acceleration, agility, strength, changeOfDirection and jumping
+            sparq: Math.round(
+              (record.speed +
+                record.acceleration +
+                record.agility +
+                record.strength +
+                record.changeOfDirection +
+                record.jumping) /
+                6
+            ),
             traitDevelopment: record.traitDevelopment,
             contractStatus: record.contractStatus,
             motivation1: record.motivation1,
