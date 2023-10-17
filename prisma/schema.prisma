@@ -132,17 +132,28 @@ model Franchise {
 }
 
 model Season {
-  id          String    @id @default(cuid())
+  id          String       @id @default(cuid())
   name        String?
-  year        Int       @default(2023)
+  year        Int          @default(2023)
   week        Int
   averageOvr  Int?
   balance     Int
-  franchise   Franchise @relation(fields: [franchiseId], references: [id])
+  franchise   Franchise    @relation(fields: [franchiseId], references: [id])
   franchiseId String
   players     Player[]
   scouts      Scout[]
+  draftPicks  DraftPick[]
   report      Report?
+}
+
+model DraftPick {
+  id           String @id @default(cuid())
+  round        Int
+  pick         Int
+  currentTeam  String
+  originalTeam String
+  season       Season @relation(fields: [seasonId], references: [id])
+  seasonId     String
 }
 
 model Scout {

@@ -20,10 +20,10 @@ export const useGetPlayer = (playerId) => {
   return useQuery(['getPlayer', playerId], () => getPlayer(playerId));
 }
 
-const createPlayers = async ({players, seasonId}) => {
+const createPlayers = async ({players, seasonId, franchiseId}) => {
   console.log('createPlayers players:', players);
   console.log('createPlayers seasonId:', seasonId);
-  const res = await window.api.ipcRenderer.invoke('create-players', { filePath: players, seasonId: seasonId });
+  const res = await window.api.ipcRenderer.invoke('create-players', { filePath: players, seasonId: seasonId, franchiseId: franchiseId });
   console.log('createPlayers res:', res);
   return res;
 }

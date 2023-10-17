@@ -1,8 +1,8 @@
-const { ipcMain } = require('electron');
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { ipcMain } = require('electron')
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
 const Franchise = require('madden-franchise')
-const fs = require('fs');
+const fs = require('fs')
 // const collegesJson = require('./src/main/json/colleges.json')
 
 const collegesPath = './src/main/json/colleges.json'
@@ -22,63 +22,61 @@ fs.readFile(collegesPath, 'utf8', (err, jsonString) => {
   }
 })
 
-
-
 export function playerController() {
   ipcMain.handle('get-player', (event, playerId) => {
     try {
-      console.log('Received get-player request');
+      console.log('Received get-player request')
       // Get player from database using Prisma
       const player = prisma.player.findUnique({
         where: {
           id: playerId
         }
-      });
-      console.log('Prisma player result:', player);
-      return player;
+      })
+      console.log('Prisma player result:', player)
+      return player
     } catch (error) {
-      console.error('Error handling get-player:', error);
+      console.error('Error handling get-player:', error)
     }
-  });
+  })
 
   ipcMain.handle('get-players', async (event, seasonId) => {
     try {
-      console.log('Received get-players request');
-      console.log('seasonId:', seasonId);
+      console.log('Received get-players request')
+      console.log('seasonId:', seasonId)
       // Get players by season from database using Prisma
       const players = await prisma.player.findMany({
         where: {
           seasonId: seasonId
         }
-      });
+      })
       // console.log('Prisma players result:', players);
-      return players;
+      return players
     } catch (error) {
-      console.error('Error handling get-players:', error);
+      console.error('Error handling get-players:', error)
     }
-  });
+  })
 
   ipcMain.handle('create-players', (event, data) => {
     console.log('Attempting to open file at:', data.filePath)
     console.log('THIS IS seasonId:', data.seasonId)
-  
+
     // Test with static data
     // event.sender.send('player-data', { test: 'This is a test' });
-  
+
     try {
       let franchise = new Franchise(data.filePath)
       console.log('Franchise object created:', !!franchise)
-  
+
       franchise.on('ready', async function () {
         try {
           console.log('Franchise is ready')
-  
+
           let playerTable = franchise.getTableByName('Player')
           console.log('Player table obtained:', !!playerTable)
-  
+
           let table = await playerTable.readRecords()
           console.log('Player table records read:', table.records.length)
-  
+
           const adjustPlayerWeights = (n) => {
             if (n > 100) {
               return 260 + (n - 100)
@@ -86,15 +84,13 @@ export function playerController() {
               return 260 - (100 - n)
             }
           }
-  
+
           const binaryToDecimal = (binary) => {
             return parseInt(binary, 2)
           }
-  
+
           function assignCollege(n) {
-            console.log("JSON", collegesJson[1])
-            console.log('n:', n)
-            const college = collegesJson.find(college => college.id === n)
+            const college = collegesJson.find((college) => college.id === n)
 
             if (!college) {
               return n + ' not found'
@@ -103,16 +99,16 @@ export function playerController() {
             return college.school
           }
 
-          function assignConference(n){
-            const conference = collegesJson.find(college => college.id === n)
+          function assignConference(n) {
+            const conference = collegesJson.find((college) => college.id === n)
             if (!conference) {
               return n + ' not found'
             }
             return conference.conference
           }
-  
+
           console.log('First ACTUAL record:', typeof table.records[0].ContractStatus)
-  
+
           const indexedRecords = table.records.map((record, index) => ({
             playerID: index,
             firstName: record.FirstName,
@@ -186,41 +182,41 @@ export function playerController() {
             passBlockFinesse: record.PassBlockFinesseRating,
             seasonId: data.seasonId
           }))
-  
+
           // indexedRecords.forEach((record, index) => {
           //   if (index < 10) {
           //     // Print the ContractStatus of the first 10 records
           //     console.log(record.contractStatus)
           //   }
           // })
-  
+
           const filteredPlayerTable = indexedRecords.filter(
             (record) => record.contractStatus === 'Draft'
           )
-  
+
           // Read first record from Player table
           console.log('First record:', filteredPlayerTable[0])
-  
+
           console.log('Filtered player table:', filteredPlayerTable.length)
-  
+
           let draftTable = franchise.getTableByName('DraftPlayer')
           console.log('DraftPlayer table obtained:', !!draftTable)
-  
+
           let draftRecords = await draftTable.readRecords()
           console.log('DraftPlayer table records read:', draftRecords.records.length)
           // Log the type of draftRecords to diagnose the issue
           // console.log('Type of draftRecords:', typeof draftRecords)
-  
+
           // if (typeof draftRecords === 'object') {
           //   console.log('Properties of draftRecords:', Object.keys(draftRecords));
           // }
           // Get all records from the DraftPlayer table
-  
+
           // filter out players where InitialDraftRank is 0
           const filteredRecords = draftRecords.records.filter(
             (record) => record.InitialDraftRank !== 0
           )
-  
+
           // Grab only necessary fields from the records
           const simplifiedRecords = filteredRecords.map((record) => ({
             playerID: binaryToDecimal(record.Player.substring(16)),
@@ -242,14 +238,12 @@ export function playerController() {
             combineOverallRanking: record.CombineOverallRanking,
             productionGrade: record.ProductionGrade
           }))
-  
+
           const combinedRecordsWithPlayerData = simplifiedRecords.map((record) => ({
             ...filteredPlayerTable.find((player) => player.playerID === record.playerID),
             ...record
           }))
-  
-          console.log('Combined records:', combinedRecordsWithPlayerData.length)
-  
+
           const prismaRecords = combinedRecordsWithPlayerData.map((record) => ({
             // Player fields
             playerID: record.playerID,
@@ -323,7 +317,8 @@ export function playerController() {
             passBlockPower: record.passBlockPower,
             passBlockFinesse: record.passBlockFinesse,
             seasonId: record.seasonId,
-  
+            franchiseId: data.franchiseId,
+
             // DraftPlayer fields
             isVisible: record.isVisible,
             proDayThreeConeDrill: record.proDayThreeConeDrill,
@@ -343,26 +338,103 @@ export function playerController() {
             combineOverallRanking: record.combineOverallRanking,
             productionGrade: record.productionGrade
           }))
-          console.log('Prisma records:', prismaRecords.length)
-          // console.log('Prisma records:', prismaRecords)
-  
+
+          // Import DraftPick table
+          const draftPickTable = franchise.getTableById(5593)
+          console.log('DraftPick table obtained:', !!draftPickTable)
+
+          // Get all records from the DraftPick table
+          const draftPickRecords = await draftPickTable.readRecords()
+
+          console.log('DraftPick table records read:', draftPickRecords.records.length)
+
+          // filter out all where YearOffset is not 0
+          const filteredDraftPickRecords = draftPickRecords.records.filter(
+            (record) => record.YearOffset === 0
+          )
+
+          console.log('Filtered draft pick records:', filteredDraftPickRecords.length)
+
+          // Grab only necessary fields from the records
+          const simplifiedDraftPickRecords = filteredDraftPickRecords.map((record) => ({
+            round: record.Round + 1,
+            pick: record.PickNumber,
+            currentTeam: binaryToDecimal(record.CurrentTeam.substring(16)),
+            originalTeam: binaryToDecimal(record.OriginalTeam.substring(16)),
+            seasonId: data.seasonId
+          }))
+
+          console.log('Simplified draft pick records:', simplifiedDraftPickRecords.length)
+
+          // Import Team table
+          const teamTable = franchise.getTableById(6030)
+          console.log('Team table obtained:', !!teamTable)
+
+          // Get all records from the Team table and grab only necessary fields and index them
+          const teamRecords = await teamTable.readRecords()
+
+          console.log('Team table records read:', teamRecords.records.length)
+
+          const indexedTeamRecords = teamRecords.records.map((record, index) => ({
+            teamId: index,
+            name: record.ShortName
+          }))
+
+          console.log('Indexed team records:', indexedTeamRecords.length)
+
+          // Filter out all records where name is "AFC", "NFC", "FA", or "HOF"
+          const filteredTeamRecords = indexedTeamRecords.filter(
+            (record) =>
+              record.name !== 'AFC' &&
+              record.name !== 'NFC' &&
+              record.name !== 'FA' &&
+              record.name !== 'HOF'
+          )
+
+          console.log('Filtered team records:', filteredTeamRecords.length)
+
+          // replace originalTeam and currentTeam with filteredTeamRecords.name where teamId matches
+          const updatedDraftPickRecords = simplifiedDraftPickRecords.map((record) => ({
+            ...record,
+            currentTeam: filteredTeamRecords.find((team) => team.teamId === record.currentTeam)
+              .name,
+            originalTeam: filteredTeamRecords.find((team) => team.teamId === record.originalTeam)
+              .name
+          }))
+
+          console.log('DRAFT PICKS', updatedDraftPickRecords[1])
+
           try {
-            // await prisma.player.createMany({
-            //   data: prismaRecords,
-            //   skipDuplicates: true,
-            // });
+            const createDraftPicksPromises = updatedDraftPickRecords.map((record) =>
+              prisma.draftPick.create({ data: record })
+            )
+
+            await Promise.all(createDraftPicksPromises)
+
             const createPlayersPromises = prismaRecords.map((record) =>
               prisma.player.create({ data: record })
             )
-            await Promise.all(createPlayersPromises)
+            const result = await Promise.all(createPlayersPromises)
+
+            // Update franchise updatedAt timestamp to current time
+            await prisma.franchise.update({
+              where: {
+                id: data.franchiseId
+              },
+              data: {
+                updatedAt: new Date()
+              }
+            })
+
+            return result
           } catch (error) {
             console.error('Error creating records:', error)
           } finally {
             console.log('Records created')
-  
+
             await prisma.$disconnect()
           }
-  
+
           // console.log('Simplified records:', simplifiedRecords);
         } catch (error) {
           console.error('Error reading franchise:', error)

@@ -44,7 +44,7 @@ function SeasonId() {
     console.log('Submit button clicked')
     console.log('SEASON ID:', season.id)
     if (selectedFilePath) {
-      createPlayers({ players: selectedFilePath, seasonId: season.id })
+      createPlayers({ players: selectedFilePath, seasonId: season.id, franchiseId: franchiseId })
     } else {
       console.error('selectedFilePath is undefined or not valid:', selectedFilePath)
     }
@@ -572,9 +572,7 @@ function SeasonId() {
       sortingFn: 'auto',
       enableSorting: true
     }
-];
-
-
+  ]
 
   if (isLoading || isFranchiseLoading || isPlayersLoading) {
     return <Loading />
@@ -586,13 +584,15 @@ function SeasonId() {
 
   if (!players || players.length === 0) {
     return (
-      <div>
+      <div className="w-full h-full">
         <BackButton />
-        <h2>No Players Found - Upload Franchise File</h2>
-        <input type="file" className="text-white" onChange={handleFileSelection} />
-        <button className="px-4 py-2 bg-slate-700 text-white" onClick={handleSubmit}>
-          Upload
-        </button>
+        <div className="mx-auto my-auto w-full">
+          <h2>No Players Found - Upload Franchise File</h2>
+          <input type="file" className="text-white" onChange={handleFileSelection} />
+          <button className="px-4 py-2 bg-slate-700 text-white" onClick={handleSubmit}>
+            Upload
+          </button>
+        </div>
       </div>
     )
   }
