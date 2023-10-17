@@ -41,6 +41,7 @@ function SeasonId() {
     onSuccess: () => {
       console.log('createPlayers success')
       refetchPlayers()
+      setIsUploading(false)
     }
   })
 
@@ -72,6 +73,11 @@ function SeasonId() {
     }
   }
 
+  function handleRefresh() {
+    refetchPlayers()
+    setIsUploading(false)
+  }
+
   function handleTabClick(tab) {
     setActiveTab(tab)
     // filter players by position
@@ -83,8 +89,24 @@ function SeasonId() {
     }
   }
 
-  if (isLoading || isFranchiseLoading || isPlayersLoading) {
+  if (isLoading || isFranchiseLoading || isPlayersLoading || isScoutsLoading || isDraftPicksLoading ) {
     return <Loading />
+  }
+
+  if (isUploading) {
+    return (
+      <div className="flex flex-col justify-center h-2/3">
+        <div className="flex flex-col gap-y-4 items-center">
+          <h2 className="font-semibold text-2xl">Uploading Players</h2>
+          <Loading />
+          <div>
+            <button className="px-4 py-2 bg-blue-700 text-white rounded w-64" onClick={handleRefresh}>
+              Refresh
+            </button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   if (!season) {

@@ -5,11 +5,8 @@ export const SeasonProspects = (props) => {
   const { players } = props
   const [activeTab, setActiveTab] = useState('all')
   const [filteredPlayers, setFilteredPlayers] = useState(players)
-  const [sortBy, setSortBy] = useState('initialDraftRank')
-  const [sortOrder, setSortOrder] = useState('asc')
-  const [filterBy, setFilterBy] = useState('all')
   const [isFilterByOpen, setIsFilterByOpen] = useState(false)
-  const [inputFilter, setInputFilter] = useState('')
+  const [sortState, setSortState] = useState({ attribute: null, order: 'default' })
 
   const handleTabClick = (tab) => {
     setActiveTab(tab)
@@ -21,106 +18,6 @@ export const SeasonProspects = (props) => {
     }
   }
 
-  const handleSortBy = (sort) => {
-    setSortBy(sort)
-    if (sortOrder === 'asc') {
-      setSortOrder('desc')
-    } else if (sortOrder === 'desc') {
-      setSortOrder('none')
-    } else {
-      setSortOrder('asc')
-    }
-
-    // setFilteredPlayers(sortPlayers(filterPlayersByPosition(players)))
-  }
-
-  const handleSortOrder = (order) => {
-    setSortOrder(order)
-  }
-
-  const sortPlayers = (players) => {
-    return players.sort((a, b) => {
-      if (sortOrder === 'asc') {
-        return a[sortBy] - b[sortBy]
-      } else if (sortOrder === 'desc') {
-        return b[sortBy] - a[sortBy]
-      } else {
-        // dont sort
-        return 0
-      }
-    })
-  }
-
-  const filterPlayersByPosition = (players) => {
-    if (activeTab === 'all') {
-      return players
-    } else {
-      return players.filter((player) => player.position === activeTab)
-    }
-  }
-
-  const handleFilterBy = (filter) => {
-    setIsFilterByOpen(false)
-    setFilterBy(filter)
-  }
-
-  const filterPlayersByInput = (input) => {
-    if (input === '') {
-      setFilteredPlayers(filterPlayersByPosition(players))
-    }
-    // use filterBy to filter players
-    else if (filterBy === 'all') {
-      setFilteredPlayers(
-        players.filter((player) => {
-          return (
-            player.firstName.toLowerCase().includes(input.toLowerCase()) ||
-            player.lastName.toLowerCase().includes(input.toLowerCase()) ||
-            player.college.toLowerCase().includes(input.toLowerCase()) ||
-            player.conference.toLowerCase().includes(input.toLowerCase()) ||
-            player.sparq.toString().includes(input.toLowerCase())
-          )
-        })
-      )
-    } else if (filterBy === 'firstName') {
-      setFilteredPlayers(
-        players.filter((player) => {
-          return player.firstName.toLowerCase().includes(input.toLowerCase())
-        })
-      )
-    } else if (filterBy === 'lastName') {
-      setFilteredPlayers(
-        players.filter((player) => {
-          return player.lastName.toLowerCase().includes(input.toLowerCase())
-        })
-      )
-    } else if (filterBy === 'college') {
-      setFilteredPlayers(
-        players.filter((player) => {
-          return player.college.toLowerCase().includes(input.toLowerCase())
-        })
-      )
-    } else if (filterBy === 'conference') {
-      setFilteredPlayers(
-        players.filter((player) => {
-          return player.conference.toLowerCase().includes(input.toLowerCase())
-        })
-      )
-    } else if (filterBy === 'sparq') {
-      setFilteredPlayers(
-        players.filter((player) => {
-          return player.sparq.toString().includes(input.toLowerCase())
-        })
-      )
-    } else {
-      setFilteredPlayers(filterPlayersByPosition(players))
-    }
-  }
-
-  const handleInputFilter = (e) => {
-    setInputFilter(e.target.value)
-    filterPlayersByInput(e.target.value)
-  }
-
   const convertInchesToFeet = (inches) => {
     const feet = Math.floor(inches / 12)
     const remainingInches = inches % 12
@@ -128,19 +25,44 @@ export const SeasonProspects = (props) => {
   }
 
   const determineSparqColor = (sparq) => {
-    if (sparq > 90) {
-      return 'fill-amber-500'
-    } else if (sparq > 85) {
+    if (sparq > 86) {
+      return 'fill-amber-300'
+    } else if (sparq > 79) {
       return 'fill-green-500'
-    } else if (sparq > 80) {
+    } else if (sparq > 69) {
       return 'fill-blue-500'
-    } else if (sparq > 75) {
-      return 'fill-purple-500'
-    } else if (sparq > 70) {
-      return 'fill-pink-500'
     } else {
       return 'fill-red-500'
     }
+  }
+
+  const sortPlayers = (sortBy) => {
+    console.log('sortBy:', sortBy)
+
+    let order = 'asc'
+    if (sortState.attribute === sortBy) {
+      order = sortState.order === 'asc' ? 'desc' : sortState.order === 'desc' ? 'default' : 'asc'
+    }
+
+    setSortState({ attribute: sortBy, order })
+
+    let sortedPlayers
+    if (order === 'default') {
+      sortedPlayers = [...filteredPlayers] // Assuming players is the original unsorted array
+    } else {
+      sortedPlayers = [...filteredPlayers].sort((a, b) => {
+        let comparison = 0
+        if (typeof a[sortBy] === 'number') {
+          comparison = a[sortBy] - b[sortBy]
+        } else {
+          comparison = a[sortBy].localeCompare(b[sortBy])
+        }
+
+        return order === 'desc' ? -comparison : comparison
+      })
+    }
+
+    setFilteredPlayers(sortedPlayers)
   }
 
   return (
@@ -508,41 +430,258 @@ export const SeasonProspects = (props) => {
       </div>
 
       {/* Add sorting for players here */}
+      <div className="flex rounded bg-neutral-900 mb-2">
+        <button
+          className="border-r border-gray-600 flex flex-col justify-center items-center w-28 py-4 relative"
+          onClick={() => sortPlayers('initialDraftRank')}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+              sortState.order === 'asc' && sortState.attribute === 'initialDraftRank'
+                ? 'block'
+                : 'hidden'
+            }`}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
 
-      <div className="flex items-center px-8 bg-gray-700 rounded mb-4">
-        <p className="text-xl text-white py-4 border-r border-gray-500 pr-8">Sort By</p>
-        <div className="flex items-center space-x-2 pl-8">
-          <button
-            className="text-white hover:underline underline-offset-2"
-            onClick={() => handleSortBy('initialDraftRank')}
+          <p className="">Initial Rank</p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+              sortState.order === 'desc' && sortState.attribute === 'initialDraftRank'
+                ? 'block'
+                : 'hidden'
+            }`}
           >
-            Initial Rank
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+        <div className="flex ml-8 w-96 pr-8 border-r border-gray-600 justify-around">
+          <button className="relative flex items-center" onClick={() => sortPlayers('firstName')}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className={`w-6 h-6 stroke-blue-600 absolute top-0 left-2 ${
+                sortState.order === 'asc' && sortState.attribute === 'firstName'
+                  ? 'block'
+                  : 'hidden'
+              }`}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+            </svg>
+            <p className="">Name</p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className={`w-6 h-6 stroke-blue-600 absolute bottom-0 left-2 ${
+                sortState.order === 'desc' && sortState.attribute === 'firstName'
+                  ? 'block'
+                  : 'hidden'
+              }`}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
           </button>
-          <button
-            className="text-white hover:underline underline-offset-2"
-            onClick={() => handleSortBy('height')}
-          >
-            Height
+          <button className="relative flex items-center" onClick={() => sortPlayers('college')}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className={`w-6 h-6 stroke-blue-600 absolute top-0 left-4 ${
+                sortState.order === 'asc' && sortState.attribute === 'college' ? 'block' : 'hidden'
+              }`}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+            </svg>
+            <p className="">College</p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className={`w-6 h-6 stroke-blue-600 absolute bottom-0 left-4 ${
+                sortState.order === 'desc' && sortState.attribute === 'college' ? 'block' : 'hidden'
+              }`}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
           </button>
-          <button
-            className="text-white hover:underline underline-offset-2"
-            onClick={() => handleSortBy('weight')}
-          >
-            Weight
-          </button>
-          <button
-            className="text-white hover:underline underline-offset-2"
-            onClick={() => handleSortBy('sparq')}
-          >
-            SPARQ
-          </button>
-          <button
-            className="text-white hover:underline underline-offset-2"
-            onClick={() => handleSortBy('isScouted')}
-          >
-            Is Scouted
+          <button className="relative flex items-center" onClick={() => sortPlayers('conference')}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className={`w-6 h-6 stroke-blue-600 absolute top-0 left-7 ${
+                sortState.order === 'asc' && sortState.attribute === 'conference'
+                  ? 'block'
+                  : 'hidden'
+              }`}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+            </svg>
+            <p className="">Conference</p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className={`w-6 h-6 stroke-blue-600 absolute bottom-0 left-7 ${
+                sortState.order === 'desc' && sortState.attribute === 'conference'
+                  ? 'block'
+                  : 'hidden'
+              }`}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
           </button>
         </div>
+        <button
+          className="flex justify-center items-center w-24 border-r border-gray-600 relative"
+          onClick={() => sortPlayers('position')}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+              sortState.order === 'asc' && sortState.attribute === 'position' ? 'block' : 'hidden'
+            }`}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+          <p className="">Position</p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+              sortState.order === 'desc' && sortState.attribute === 'position' ? 'block' : 'hidden'
+            }`}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+        <div className='flex justify-center w-24 items-center border-r border-gray-600'>
+          <button
+            className="relative mr-4"
+            onClick={() => sortPlayers('height')}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className={`w-6 h-6 stroke-blue-600 absolute -top-4 -right-2 ${
+                sortState.order === 'asc' && sortState.attribute === 'height' ? 'block' : 'hidden'
+              }`}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+            </svg>
+            <p className="">H</p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className={`w-6 h-6 stroke-blue-600 absolute -bottom-4 -right-[0.41rem] ${
+                sortState.order === 'desc' && sortState.attribute === 'height' ? 'block' : 'hidden'
+              }`}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+          <button
+            className=" relative"
+            onClick={() => sortPlayers('weight')}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className={`w-6 h-6 stroke-blue-600 absolute -top-4 -right-[0.36rem] ${
+                sortState.order === 'asc' && sortState.attribute === 'weight' ? 'block' : 'hidden'
+              }`}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+            </svg>
+            <p className="">W</p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className={`w-6 h-6 stroke-blue-600 absolute -bottom-4 -right-[0.35rem] ${
+                sortState.order === 'desc' && sortState.attribute === 'weight' ? 'block' : 'hidden'
+              }`}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+        
+        </div>
+        <button className="flex flex-col justify-center w-24 items-center border-r border-gray-600 relative" onClick={() => sortPlayers('sparq')}>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+              sortState.order === 'asc' && sortState.attribute === 'sparq'
+                ? 'block'
+                : 'hidden'
+            }`}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+          <p className="">SPARQ</p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+              sortState.order === 'desc' && sortState.attribute === 'sparq'
+                ? 'block'
+                : 'hidden'
+            }`}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+
       </div>
 
       {/* Add players */}
@@ -559,7 +698,7 @@ export const SeasonProspects = (props) => {
                   {player.firstName} {player.lastName}
                 </p>
                 <p>
-                  {player.college} | {player.conference}
+                  {player.college} | <span className="">{player.conference}</span>
                 </p>
               </div>
             </div>
@@ -573,7 +712,9 @@ export const SeasonProspects = (props) => {
             <div className="flex flex-col justify-center w-24 items-center border-r border-gray-600 relative">
               <svg
                 fill="#000000"
-                className={`h-16 w-16 absolute top-50% right-50% stroke-slate-50 stroke-2 rotate-90 ${determineSparqColor(player.sparq)}`}
+                className={`h-16 w-16 absolute top-50% right-50% stroke-slate-50 stroke-2 rotate-90 ${determineSparqColor(
+                  player.sparq
+                )}`}
                 version="1.1"
                 id="Capa_1"
                 xmlns="http://www.w3.org/2000/svg"
@@ -583,7 +724,9 @@ export const SeasonProspects = (props) => {
               >
                 <path d="M0,92.375l46.188-80h92.378l46.185,80l-46.185,80H46.188L0,92.375z" />
               </svg>
-              <p className="text-2xl z-10 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">{player.sparq}</p>
+              <p className="text-2xl z-10 drop-shadow-[0_1.4px_1.4px_rgba(0,0,0,1)]">
+                {player.sparq}
+              </p>
             </div>
           </div>
         ))}

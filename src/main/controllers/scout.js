@@ -169,7 +169,6 @@ export function scoutController() {
         })
       })
       const result = await Promise.all(scoutPromises)
-      console.log('Prisma create result:', result)
       return result
     } catch (error) {
       console.error('Error handling generate-scouts:', error)
