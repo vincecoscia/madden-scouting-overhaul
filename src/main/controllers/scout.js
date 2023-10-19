@@ -77,8 +77,11 @@ export function scoutController() {
   })
 
   ipcMain.handle('hire-scout-for-season', async (event, data) => {
-    const { scoutId, seasonId, cost } = data
-
+    const { scoutId, seasonId, cost, balance } = data
+    if (balance < cost) {
+      const error = new Error('INSUFFICIENT_FUNDS');
+      throw error;
+    }
     // Add scoutId to season by connecting the scout to the season and reduce the season's balance by the scout's cost
     try {
       console.log('Received hire-scout-for-season request')
