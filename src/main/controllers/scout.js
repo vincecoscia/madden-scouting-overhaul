@@ -21,15 +21,19 @@ export function scoutController() {
 
   ipcMain.handle('get-scouts-by-season', async (event, seasonId) => {
     try {
-      console.log('Received get-scouts request')
+      console.log('Received get-scouts-by-season request')
       console.log('seasonId:', seasonId)
-      // Get scouts by season from database using Prisma
+      // Get scouts by season (remember its a many to many relationship) from database using Prisma
       const scouts = await prisma.scout.findMany({
         where: {
-          seasonId: seasonId
+          season: {
+            some: {
+              id: seasonId
+            }
+          }
         }
       })
-      console.log('Prisma scouts result:', scouts)
+      console.log('Prisma season scouts result:', scouts)
       return scouts
     } catch (error) {
       console.error('Error handling get-scouts:', error)
@@ -46,7 +50,7 @@ export function scoutController() {
           franchiseId: franchiseId
         }
       })
-      console.log('Prisma scouts result:', scouts)
+      // console.log('Prisma scouts result:', scouts)
       return scouts
     } catch (error) {
       console.error('Error handling get-scouts:', error)
@@ -73,8 +77,9 @@ export function scoutController() {
   })
 
   ipcMain.handle('hire-scout-for-season', async (event, data) => {
-    const { scoutId, seasonId } = data
+    const { scoutId, seasonId, cost } = data
 
+    // Add scoutId to season by connecting the scout to the season and reduce the season's balance by the scout's cost
     try {
       console.log('Received hire-scout-for-season request')
       const updatedSeason = await prisma.season.update({
@@ -86,9 +91,13 @@ export function scoutController() {
             connect: {
               id: scoutId // Connecting the scout to the season by ID
             }
+          },
+          balance: {
+            decrement: cost // Decrementing the season's balance by the scout's cost
           }
         }
       })
+
       console.log('Updated season:', updatedSeason)
       return updatedSeason
     } catch (error) {
@@ -133,7 +142,7 @@ export function scoutController() {
   })
 
   ipcMain.handle('fire-scout-from-season', async (event, data) => {
-    const { scoutId, seasonId } = data
+    const { scoutId, seasonId, cost } = data
 
     try {
       console.log('Received fire-scout-from-season request')
@@ -146,7 +155,11 @@ export function scoutController() {
             disconnect: {
               id: scoutId // Disconnecting the scout from the season by ID
             }
+          },
+          balance: {
+            increment: cost // Incrementing the season's balance by 0
           }
+
         }
       })
       console.log('Updated season:', updatedSeason)
@@ -192,6 +205,8 @@ export function scoutController() {
     const conferences = ['SEC', 'ACC', 'Big 10', 'Big 12', 'PAC-12', 'Non-Power-5']
 
     const scouts = Array.from({ length: numberOfScouts }, () => {
+      // portrait should be a random number between 169 and 225
+      const portrait = Math.floor(Math.random() * 56) + 169
       const evaluation = Math.floor(Math.random() * 10) + 1
       const reputation = clamp(evaluation + Math.floor(Math.random() * 5) - 2, 1, 10)
       const cost = [50, 75, 100, 200, 300, 450, 600, 750, 900, 1000][reputation - 1]
@@ -199,6 +214,7 @@ export function scoutController() {
       const baseXpReputation = 300
 
       return {
+        portrait,
         firstName: generateRandomFirstName(),
         lastName: generateRandomLastName(),
         evaluation,

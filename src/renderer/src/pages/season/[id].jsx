@@ -4,7 +4,7 @@ import { useDropzone } from 'react-dropzone'
 import { useGetAllSeasons, useGetSeason } from '../../queries/season'
 import { useGetFranchise } from '../../queries/franchise'
 import { useGetAllPlayers, useCreatePlayers } from '../../queries/player'
-import { useGetScoutsByFranchise } from '../../queries/scout'
+import { useGetScoutsByFranchise, useGetScoutsBySeason } from '../../queries/scout'
 import { useGetDraftPicksBySeason } from '../../queries/draftPick'
 
 import { SeasonOverview as Overview } from '../../components/season/Overview'
@@ -33,7 +33,9 @@ function SeasonId() {
     refetch: refetchPlayers
   } = useGetAllPlayers(id)
 
-  const { data: scouts, isLoading: isScoutsLoading } = useGetScoutsByFranchise(franchiseId)
+  const { data: franchiseScouts, isLoading: isScoutsLoading } = useGetScoutsByFranchise(franchiseId)
+
+  const { data: seasonScouts, isLoading: isSeasonScoutsLoading } = useGetScoutsBySeason(id)
 
   const { data: draftPicks, isLoading: isDraftPicksLoading } = useGetDraftPicksBySeason(id)
 
@@ -208,13 +210,13 @@ function SeasonId() {
       </div>
       <div>
         {activeTab === 'overview' && (
-          <Overview season={season} franchise={franchise} players={players} scouts={scouts} draftPicks={draftPicks} />
+          <Overview season={season} franchise={franchise} players={players} franchiseScouts={franchiseScouts} seasonScouts={seasonScouts} draftPicks={draftPicks} />
         )}
         {activeTab === 'scouts' && (
-          <Scouts season={season} franchise={franchise} players={players} scouts={scouts} draftPicks={draftPicks} />
+          <Scouts season={season} franchise={franchise} players={players} franchiseScouts={franchiseScouts} seasonScouts={seasonScouts} draftPicks={draftPicks} />
         )}
         {activeTab === 'prospects' && (
-          <Prospects season={season} franchise={franchise} players={players} scouts={scouts} draftPicks={draftPicks} />
+          <Prospects season={season} franchise={franchise} players={players} franchiseScouts={franchiseScouts} seasonScouts={seasonScouts} draftPicks={draftPicks} />
         )}  
       </div>
     </div>

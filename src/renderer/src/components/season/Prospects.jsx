@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Portrait } from '../Portrait'
 
 export const SeasonProspects = (props) => {
@@ -7,13 +7,22 @@ export const SeasonProspects = (props) => {
   const [filteredPlayers, setFilteredPlayers] = useState(players)
   const [isFilterByOpen, setIsFilterByOpen] = useState(false)
   const [sortState, setSortState] = useState({ attribute: null, order: 'default' })
+  const [filterCriteria, setFilterCriteria] = useState({
+    firstName: '',
+    college: '',
+    conference: '',
+    position: '',
+    sparq: '',
+  });
 
   const handleTabClick = (tab) => {
     setActiveTab(tab)
 
     if (tab === 'all') {
+      setSortState({ attribute: null, order: 'default' })
       setFilteredPlayers(players)
     } else {
+      setSortState({ attribute: null, order: 'default' })
       setFilteredPlayers(players.filter((player) => player.position === tab))
     }
   }
@@ -35,6 +44,13 @@ export const SeasonProspects = (props) => {
       return 'fill-red-500'
     }
   }
+
+  // const handleFilterBy = (attribute, value) => {
+  //   setFilterCriteria(prevCriteria => ({
+  //     ...prevCriteria,
+  //     [attribute]: value,
+  //   }));
+  // };
 
   const sortPlayers = (sortBy) => {
     console.log('sortBy:', sortBy)
@@ -64,6 +80,23 @@ export const SeasonProspects = (props) => {
 
     setFilteredPlayers(sortedPlayers)
   }
+
+  // useEffect(() => {
+  //   const filteredPlayersAgain = filteredPlayers.filter(player => {
+  //     return Object.entries(filterCriteria).every(([key, value]) => {
+  //       if (!value) return true; // Ignore empty criteria
+  
+  //       if (key === 'sparq') {
+  //         return player[key] > value; // Example for numeric criteria
+  //       }
+  
+  //       return player[key].toLowerCase().includes(value.toLowerCase()); // Example for text criteria
+  //     });
+  //   });
+  
+  //   setFilteredPlayers(filteredPlayersAgain);
+  // }, [filterCriteria, filteredPlayers]);
+  
 
   return (
     <>
@@ -341,9 +374,9 @@ export const SeasonProspects = (props) => {
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="m1 1 4 4 4-4"
               />
             </svg>
@@ -359,7 +392,7 @@ export const SeasonProspects = (props) => {
               <li>
                 <button
                   className="block w-full text-left px-4 py-2 hover:bg-gray-600 hover:text-white"
-                  onClick={() => handleFilterBy('all')}
+                  onClick={() => handleFilterBy('all', typedValue)}
                 >
                   All
                 </button>
@@ -367,34 +400,10 @@ export const SeasonProspects = (props) => {
               <li>
                 <button
                   className="block w-full text-left px-4 py-2 hover:bg-gray-600 hover:text-white"
-                  onClick={() => handleFilterBy('firstName')}
+                  onClick={() => handleFilterBy('firstName', typedValue)}
                 >
                   First Name
                 </button>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Images
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  News
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Finance
-                </a>
               </li>
             </ul>
           </div>
@@ -404,27 +413,8 @@ export const SeasonProspects = (props) => {
               id="search-dropdown"
               className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-100 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
               placeholder="Search"
-              required
+              onChange={(e) => handleFilterBy(selectedAttribute, e.target.value)}
             />
-            <button
-              type="submit"
-              className="absolute top-0 right-0 p-2.5 h-full text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-4 h-4"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z"
-                />
-              </svg>
-            </button>
           </div>
         </div>
       </div>
@@ -718,9 +708,9 @@ export const SeasonProspects = (props) => {
                 version="1.1"
                 id="Capa_1"
                 xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
                 viewBox="0 0 184.751 184.751"
-                xml:space="preserve"
+                xmlSpace="preserve"
               >
                 <path d="M0,92.375l46.188-80h92.378l46.185,80l-46.185,80H46.188L0,92.375z" />
               </svg>

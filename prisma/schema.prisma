@@ -165,6 +165,7 @@ model Scout {
   id                  String         @id @default(cuid())
   firstName           String
   lastName            String
+  portrait            Int
   evaluation          Int
   reputation          Int
   specialty           String

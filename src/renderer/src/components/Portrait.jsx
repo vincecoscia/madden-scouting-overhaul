@@ -5,7 +5,7 @@ export const Portrait = ({ id }) => {
   const [imgSrc, setImgSrc] = useState('')
 
   useEffect(() => {
-    import(`../assets/scout_portraits/${id}.png`)
+    import(`../assets/portraits/${id}.png`)
       .then((image) => {
         setImgSrc(image.default)
       })
