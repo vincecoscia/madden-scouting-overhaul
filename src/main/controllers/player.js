@@ -74,8 +74,7 @@ export function playerController() {
 
     franchise.on('ready', async function () {
       try {
-        console.log('Franchise is ready')
-
+        // Get all players in the Player table
         let playerTable = franchise.getTableByName('Player')
         console.log('Player table obtained:', !!playerTable)
 
@@ -349,21 +348,179 @@ export function playerController() {
           productionGrade: record.productionGrade
         }))
 
+        // Get all players using only position and overall
+        const players = prismaRecords.map((record) => ({
+          position: record.position,
+          overall: record.overall
+        }))
+
+        // Get the average overall for each position based on the top 10 players at each position
+        const averageOverallByPosition = players.reduce((acc, player) => {
+          if (!acc[player.position]) {
+            acc[player.position] = []
+          }
+          acc[player.position].push(player.overall)
+          return acc
+        }, {})
+        for (const position in averageOverallByPosition) {
+          // Round to 2 decimal places
+          averageOverallByPosition[position] = Math.round(
+            averageOverallByPosition[position].reduce((a, b) => a + b, 0) /
+              averageOverallByPosition[position].length *
+              100
+          ) / 100
+        }
+
+        // Get the average of the offense and defense overall
+        const averageOverall = Math.round(
+          Object.values(averageOverallByPosition).reduce((a, b) => a + b, 0) /
+            Object.values(averageOverallByPosition).length *
+            100
+        ) / 100
+
+        const averageOffenseOverall = Math.round(
+          (averageOverallByPosition.QB +
+            averageOverallByPosition.HB +
+            averageOverallByPosition.WR +
+            averageOverallByPosition.TE +
+            averageOverallByPosition.RT +
+            averageOverallByPosition.RG +
+            averageOverallByPosition.C +
+            averageOverallByPosition.LG +
+            averageOverallByPosition.LT) /
+            9 *
+            100
+        ) / 100
+
+        const averageDefenseOverall = Math.round(
+          (averageOverallByPosition.LE +
+            averageOverallByPosition.RE +
+            averageOverallByPosition.DT +
+            averageOverallByPosition.LOLB +
+            averageOverallByPosition.MLB +
+            averageOverallByPosition.ROLB +
+            averageOverallByPosition.CB +
+            averageOverallByPosition.FS +
+            averageOverallByPosition.SS) /
+            9 *
+            100
+        ) / 100
+
+        // Match the Report model with the average overall data. Remember averageOverallByPosition is an object, not an array
+        // This is the data that will be inserted into the Report table
+        // avgOverall                     Float
+        // offenseOverall                 Float
+        // defenseOverall                 Float
+        // qbOverall                      Float
+        // hbOverall                      Float
+        // fbOverall                      Float
+        // wrOverall                      Float
+        // teOverall                      Float
+        // ltOverall                      Float
+        // lgOverall                      Float
+        // cOverall                       Float
+        // rgOverall                      Float
+        // rtOverall                      Float
+        // leOverall                      Float
+        // reOverall                      Float
+        // dtOverall                      Float
+        // lolbOverall                    Float
+        // mlbOverall                     Float
+        // rolbOverall                    Float
+        // cbOverall                      Float
+        // fsOverall                      Float
+        // ssOverall                      Float
+        // kOverall                       Float
+        // pOverall                       Float
+        // seasonId                       Int
+
+        const prismaReportRecords = {
+          avgOverall: averageOverall,
+          offenseOverall: averageOffenseOverall,
+          defenseOverall: averageDefenseOverall,
+          qbOverall: averageOverallByPosition.QB,
+          hbOverall: averageOverallByPosition.HB,
+          fbOverall: averageOverallByPosition.FB,
+          wrOverall: averageOverallByPosition.WR,
+          teOverall: averageOverallByPosition.TE,
+          ltOverall: averageOverallByPosition.LT,
+          lgOverall: averageOverallByPosition.LG,
+          cOverall: averageOverallByPosition.C,
+          rgOverall: averageOverallByPosition.RG,
+          rtOverall: averageOverallByPosition.RT,
+          leOverall: averageOverallByPosition.LE,
+          reOverall: averageOverallByPosition.RE,
+          dtOverall: averageOverallByPosition.DT,
+          lolbOverall: averageOverallByPosition.LOLB,
+          mlbOverall: averageOverallByPosition.MLB,
+          rolbOverall: averageOverallByPosition.ROLB,
+          cbOverall: averageOverallByPosition.CB,
+          fsOverall: averageOverallByPosition.FS,
+          ssOverall: averageOverallByPosition.SS,
+          kOverall: averageOverallByPosition.K,
+          pOverall: averageOverallByPosition.P,
+          seasonId: data.seasonId,
+          franchiseId: data.franchiseId
+        }
+
+        await prisma.report.create({ data: prismaReportRecords })
+
+        // Get 3 highest average overall by position
+        const topThree = Object.entries(averageOverallByPosition)
+          .sort(([, a], [, b]) => b - a)
+          .slice(0, 3)
+          .map(([position], index) => ({
+            position,
+            rank: index + 1,
+            seasonId: data.seasonId
+          }))
+
+        // Get 3 lowest average overall by position
+        const bottomThree = Object.entries(averageOverallByPosition)
+          .sort(([, a], [, b]) => a - b)
+          .slice(0, 3)
+          // add rank to each entry
+          .map(([position], index) => ({
+            position,
+            rank: index + 1,
+            seasonId: data.seasonId
+          }))
+
+        // Insert top 3 and bottom 3 into the Best table and Worst table respectively. Remember we can't use createMany with sqlite
+        const createBestPromises = topThree.map((record) => prisma.best.create({ data: record }))
+        const createWorstPromises = bottomThree.map((record) => prisma.worst.create({ data: record }))
+
+        await Promise.all(createBestPromises)
+        await Promise.all(createWorstPromises)
+        
+
+        console.log('Average overall:', averageOverall)
+
+        console.log('Average overall by position:', averageOverallByPosition)
+
+        console.log('Average offense overall:', averageOffenseOverall)
+
+        console.log('Average defense overall:', averageDefenseOverall)
+
+        console.log('Top 3:', topThree)
+
+        console.log('Bottom 3:', bottomThree)
+
         // Import DraftPick table
         const draftPickTable = franchise.getTableById(5593)
-        console.log('DraftPick table obtained:', !!draftPickTable)
+        // console.log('DraftPick table obtained:', !!draftPickTable)
 
         // Get all records from the DraftPick table
         const draftPickRecords = await draftPickTable.readRecords()
 
-        console.log('DraftPick table records read:', draftPickRecords.records.length)
+        // console.log('DraftPick table records read:', draftPickRecords.records.length)
 
         // filter out all where YearOffset is not 0
         const filteredDraftPickRecords = draftPickRecords.records.filter(
           (record) => record.YearOffset === 0
         )
 
-        console.log('Filtered draft pick records:', filteredDraftPickRecords.length)
+        // console.log('Filtered draft pick records:', filteredDraftPickRecords.length)
 
         // Grab only necessary fields from the records
         const simplifiedDraftPickRecords = filteredDraftPickRecords.map((record) => ({
@@ -374,7 +531,7 @@ export function playerController() {
           seasonId: data.seasonId
         }))
 
-        console.log('Simplified draft pick records:', simplifiedDraftPickRecords.length)
+        // console.log('Simplified draft pick records:', simplifiedDraftPickRecords.length)
 
         // Import Team table
         const teamTable = franchise.getTableById(6030)
@@ -383,14 +540,14 @@ export function playerController() {
         // Get all records from the Team table and grab only necessary fields and index them
         const teamRecords = await teamTable.readRecords()
 
-        console.log('Team table records read:', teamRecords.records.length)
+        // console.log('Team table records read:', teamRecords.records.length)
 
         const indexedTeamRecords = teamRecords.records.map((record, index) => ({
           teamId: index,
           name: record.ShortName
         }))
 
-        console.log('Indexed team records:', indexedTeamRecords.length)
+        // console.log('Indexed team records:', indexedTeamRecords.length)
 
         // Filter out all records where name is "AFC", "NFC", "FA", or "HOF"
         const filteredTeamRecords = indexedTeamRecords.filter(
@@ -401,7 +558,7 @@ export function playerController() {
             record.name !== 'HOF'
         )
 
-        console.log('Filtered team records:', filteredTeamRecords.length)
+        // console.log('Filtered team records:', filteredTeamRecords.length)
 
         // replace originalTeam and currentTeam with filteredTeamRecords.name where teamId matches
         const updatedDraftPickRecords = simplifiedDraftPickRecords.map((record) => ({
@@ -410,7 +567,7 @@ export function playerController() {
           originalTeam: filteredTeamRecords.find((team) => team.teamId === record.originalTeam).name
         }))
 
-        console.log('DRAFT PICKS', updatedDraftPickRecords[1])
+        // console.log('DRAFT PICKS', updatedDraftPickRecords[1])
 
         const createDraftPicksPromises = updatedDraftPickRecords.map((record) =>
           prisma.draftPick.create({ data: record })

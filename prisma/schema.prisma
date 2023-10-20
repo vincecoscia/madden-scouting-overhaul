@@ -140,7 +140,7 @@ model Season {
   id           String      @id @default(cuid())
   name         String?
   year         Int         @default(2023)
-  week         Int
+  week         Int         @default(0)
   averageOvr   Int?
   balance      Int
   scoutsLocked Boolean     @default(false)
@@ -148,6 +148,8 @@ model Season {
   franchiseId  String
   players      Player[]
   scouts       Scout[]
+  best         Best[]
+  worst        Worst[]
   draftPicks   DraftPick[]
   report       Report?
 }
@@ -273,36 +275,51 @@ model ScoutComment {
 
 model Report {
   id                             String     @id @default(cuid())
-  avgOverall                     Int
-  offenseOverall                 Int
-  defenseOverall                 Int
-  sparqOverall                   Int
-  qbOverall                      Int
-  hbOverall                      Int
-  fbOverall                      Int
-  wrOverall                      Int
-  teOverall                      Int
-  ltOverall                      Int
-  lgOverall                      Int
-  cOverall                       Int
-  rgOverall                      Int
-  rtOverall                      Int
-  leOverall                      Int
-  reOverall                      Int
-  dtOverall                      Int
-  lolbOverall                    Int
-  mlbOverall                     Int
-  rolbOverall                    Int
-  cbOverall                      Int
-  fsOverall                      Int
-  ssOverall                      Int
-  kOverall                       Int
-  pOverall                       Int
+  avgOverall                     Float
+  offenseOverall                 Float
+  defenseOverall                 Float
+  qbOverall                      Float
+  hbOverall                      Float
+  fbOverall                      Float
+  wrOverall                      Float
+  teOverall                      Float
+  ltOverall                      Float
+  lgOverall                      Float
+  cOverall                       Float
+  rgOverall                      Float
+  rtOverall                      Float
+  leOverall                      Float
+  reOverall                      Float
+  dtOverall                      Float
+  lolbOverall                    Float
+  mlbOverall                     Float
+  rolbOverall                    Float
+  cbOverall                      Float
+  fsOverall                      Float
+  ssOverall                      Float
+  kOverall                       Float
+  pOverall                       Float
   potentiallyGenerationalPlayers Player[]
   season                         Season     @relation(fields: [seasonId], references: [id])
   seasonId                       String     @unique
   franchise                      Franchise? @relation(fields: [franchiseId], references: [id])
   franchiseId                    String?
+}
+
+model Best {
+  id       String @id @default(cuid())
+  position String
+  rank     Int
+  season   Season @relation(fields: [seasonId], references: [id])
+  seasonId String
+}
+
+model Worst {
+  id       String @id @default(cuid())
+  position String
+  rank     Int
+  season   Season @relation(fields: [seasonId], references: [id])
+  seasonId String
 }
 
 model Bucket {

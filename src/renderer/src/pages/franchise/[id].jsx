@@ -28,7 +28,6 @@ function FranchiseId() {
 
     const season = {
       name: `Season ${numberOfSeasons + 1}`,
-      week: 1,
       year: year,
       franchiseId: id,
       balance: 2000
