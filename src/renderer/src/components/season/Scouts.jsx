@@ -1,21 +1,24 @@
 import { Portrait } from '../Portrait'
+import { useState } from 'react'
 import { useHireScoutForSeason, useFireScoutFromSeason } from '../../queries/scout'
 import { useUpdateSeason } from '../../queries/season'
-import { toast } from 'react-toastify' 
+import { toast } from 'react-toastify'
 
 export const SeasonScouts = (props) => {
   const { season, franchiseScouts, seasonScouts } = props
+  const [sortedFranchiseScouts, setSortedFranchiseScouts] = useState(franchiseScouts)
+  const [sortState, setSortState] = useState({ attribute: null, order: 'default' })
 
   const { mutateAsync: hireScoutForSeason } = useHireScoutForSeason({
     onSuccess: () => {
       console.log('hireScoutForSeason success')
     },
     onError: (error) => {
-      console.error("TOAST ERROR:", error); // This will log the full error object
-      toast.error(error.errorMessage || 'An error occurred'); // Display the custom error message or a default one
+      console.error('TOAST ERROR:', error) // This will log the full error object
+      toast.error(error.errorMessage || 'An error occurred') // Display the custom error message or a default one
     }
   })
- 
+
   const { mutateAsync: fireScoutFromSeason } = useFireScoutFromSeason({
     onSuccess: () => {
       console.log('fireScoutFromSeason success')
@@ -28,6 +31,35 @@ export const SeasonScouts = (props) => {
     }
   })
 
+  const sortScouts = (sortBy) => {
+    console.log('sortBy:', sortBy)
+
+    let order = 'asc'
+    if (sortState.attribute === sortBy) {
+      order = sortState.order === 'asc' ? 'desc' : sortState.order === 'desc' ? 'default' : 'asc'
+    }
+
+    setSortState({ attribute: sortBy, order })
+
+    let sortedScouts
+    if (order === 'default') {
+      sortedScouts = [...franchiseScouts] // Assuming scouts is the original unsorted array
+    } else {
+      sortedScouts = [...franchiseScouts].sort((a, b) => {
+        let comparison = 0
+        if (typeof a[sortBy] === 'number') {
+          comparison = a[sortBy] - b[sortBy]
+        } else {
+          comparison = a[sortBy].localeCompare(b[sortBy])
+        }
+
+        return order === 'desc' ? -comparison : comparison
+      })
+    }
+
+    setSortedFranchiseScouts(sortedScouts)
+  }
+
   const convertThousands = (number) => {
     // Return number divided by 1000 with 1 decimal place
     return (number / 1000).toFixed(2)
@@ -36,11 +68,11 @@ export const SeasonScouts = (props) => {
   return (
     <div>
       <div className="pr-4  rounded mb-4 bg-blue-700 w-fit flex items-center">
-        <p className='py-5 px-4 rounded-l bg-neutral-800'>Season Balance: </p>
+        <p className="py-5 px-4 rounded-l bg-neutral-800">Season Balance: </p>
         {season.balance > 999 ? (
-          <p className='py-4 ml-4 text-xl'>{convertThousands(season.balance)}M</p>
+          <p className="py-4 ml-4 text-xl">{convertThousands(season.balance)}M</p>
         ) : (
-          <p className='py-4 ml-4 text-xl'>{season.balance}K</p>
+          <p className="py-4 ml-4 text-xl">{season.balance}K</p>
         )}
       </div>
       <div className="grid grid-cols-3 gap-x-4 h-[740px]">
@@ -48,13 +80,16 @@ export const SeasonScouts = (props) => {
           <div className="flex justify-center w-full py-2 border-b border-gray-600 ">
             <p className="text-xl">Hired Scouts</p>
           </div>
-          
+
           {seasonScouts.length > 0 ? (
-            <div className='flex flex-col justify-between h-full'>
+            <div className="flex flex-col justify-between h-full">
               <div className="overflow-y-scroll flex flex-col gap-y-2 ml-2 py-2">
                 {seasonScouts.map((scout) => {
                   return (
-                    <div key={scout.id} className="flex items-center rounded bg-neutral-800 gap-y-2">
+                    <div
+                      key={scout.id}
+                      className="flex items-center rounded bg-neutral-800 gap-y-2"
+                    >
                       <div className="flex items-center border-r border-gray-600 w-64 pl-2">
                         <Portrait id={scout.portrait} />
                         <div className=" ml-2">
@@ -87,21 +122,20 @@ export const SeasonScouts = (props) => {
                     </div>
                   )
                 })}
-
               </div>
               <div className="flex mb-2 w-full">
-                  <button
-                    className="py-2 bg-green-700 text-white rounded w-full mx-2"
-                    onClick={() =>
-                      lockScoutsOnSeason({
-                        ...season,
-                        scoutsLocked: true
-                      })
-                    }
-                  >
-                    Lock In Scouts
-                  </button>
-                  </div>
+                <button
+                  className="py-2 bg-green-700 text-white rounded w-full mx-2"
+                  onClick={() =>
+                    lockScoutsOnSeason({
+                      ...season,
+                      scoutsLocked: true
+                    })
+                  }
+                >
+                  Lock In Scouts
+                </button>
+              </div>
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center h-2/3">
@@ -114,9 +148,307 @@ export const SeasonScouts = (props) => {
           <div className="flex justify-center w-full py-2 border-b border-gray-600 ">
             <p className="text-xl">Available Scouts</p>
           </div>
+          <div className="flex items-center rounded bg-neutral-800 gap-y-2 mx-2 mt-2">
+              <button
+                className="border-r border-gray-600 flex flex-col justify-center items-center w-80 py-4 relative"
+                onClick={() => sortScouts('firstName')}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+                    sortState.order === 'asc' && sortState.attribute === 'firstName'
+                      ? 'block'
+                      : 'hidden'
+                  }`}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.5 15.75l7.5-7.5 7.5 7.5"
+                  />
+                </svg>
+
+                <p className="">Name</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+                    sortState.order === 'desc' && sortState.attribute === 'firstName'
+                      ? 'block'
+                      : 'hidden'
+                  }`}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                  />
+                </svg>
+              </button>
+              <button
+                className="border-r border-gray-600 flex h-full items-center justify-center w-24 py-4 relative"
+                onClick={() => sortScouts('evaluation')}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+                    sortState.order === 'asc' && sortState.attribute === 'evaluation'
+                      ? 'block'
+                      : 'hidden'
+                  }`}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.5 15.75l7.5-7.5 7.5 7.5"
+                  />
+                </svg>
+
+                <p className="">Evaluation</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+                    sortState.order === 'desc' && sortState.attribute === 'evaluation'
+                      ? 'block'
+                      : 'hidden'
+                  }`}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                  />
+                </svg>
+              </button>
+              <button
+                className="border-r border-gray-600 flex h-full items-center justify-center w-24 py-4 relative"
+                onClick={() => sortScouts('reputation')}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+                    sortState.order === 'asc' && sortState.attribute === 'reputation'
+                      ? 'block'
+                      : 'hidden'
+                  }`}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.5 15.75l7.5-7.5 7.5 7.5"
+                  />
+                </svg>
+                <p className="">Reputation</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+                    sortState.order === 'desc' && sortState.attribute === 'reputation'
+                      ? 'block'
+                      : 'hidden'
+                  }`}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                  />
+                </svg>
+              </button>
+              <button
+                className="border-r border-gray-600 flex h-full items-center justify-center w-28 py-4 relative"
+                onClick={() => sortScouts('bias')}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+                    sortState.order === 'asc' && sortState.attribute === 'bias'
+                      ? 'block'
+                      : 'hidden'
+                  }`}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.5 15.75l7.5-7.5 7.5 7.5"
+                  />
+                </svg>
+                <p className="">Bias</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+                    sortState.order === 'desc' && sortState.attribute === 'bias'
+                      ? 'block'
+                      : 'hidden'
+                  }`}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                  />
+                </svg>
+              </button>
+              <button
+                className="border-r border-gray-600 flex h-full items-center justify-center w-28 py-4 relative"
+                onClick={() => sortScouts('specialty')}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+                    sortState.order === 'asc' && sortState.attribute === 'specialty'
+                      ? 'block'
+                      : 'hidden'
+                  }`}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.5 15.75l7.5-7.5 7.5 7.5"
+                  />
+                </svg>
+                <p className="">Specialty</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+                    sortState.order === 'desc' && sortState.attribute === 'specialty'
+                      ? 'block'
+                      : 'hidden'
+                  }`}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                  />
+                </svg>
+              </button>
+              <button
+                className="border-r border-gray-600 flex h-full items-center justify-center w-28 py-4 relative"
+                onClick={() => sortScouts('conferenceSpecialty')}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+                    sortState.order === 'asc' && sortState.attribute === 'conferenceSpecialty'
+                      ? 'block'
+                      : 'hidden'
+                  }`}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.5 15.75l7.5-7.5 7.5 7.5"
+                  />
+                </svg>
+                <p className="">Conference</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+                    sortState.order === 'desc' && sortState.attribute === 'conferenceSpecialty'
+                      ? 'block'
+                      : 'hidden'
+                  }`}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                  />
+                </svg>
+              </button>
+              <button
+                className="flex h-full items-center justify-center w-24 py-4 relative border-r border-gray-600"
+                onClick={() => sortScouts('cost')}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+                    sortState.order === 'asc' && sortState.attribute === 'cost'
+                      ? 'block'
+                      : 'hidden'
+                  }`}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.5 15.75l7.5-7.5 7.5 7.5"
+                  />
+                </svg>
+                <p className="">Cost</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+                    sortState.order === 'desc' && sortState.attribute === 'cost'
+                      ? 'block'
+                      : 'hidden'
+                  }`}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                  />
+                </svg>
+              </button>
+          </div>
           {franchiseScouts.length > 0 ? (
             <div className="overflow-y-scroll flex flex-col gap-y-2 px-2 py-2">
-              {franchiseScouts.map((scout) => {
+              {sortedFranchiseScouts.map((scout) => {
                 return (
                   <div key={scout.id} className="flex items-center rounded bg-neutral-800 gap-y-2">
                     <div className="flex items-center border-r border-gray-600 w-80 pl-4">
@@ -169,16 +501,11 @@ export const SeasonScouts = (props) => {
                             />
                           </svg>
                         </div>
+                      ) : seasonScouts.length >= 5 ? (
+                        <div className="text-white">Max Scouts Hired (5)</div>
                       ) : (
-                        seasonScouts.length >= 5 ? (
-                        <div
-                          className='text-white'
-                        >
-                          Max Scouts Hired (5)
-                        </div>
-                        ) : (
-                          <button
-                          className='px-12 py-2 text-white rounded bg-blue-700'
+                        <button
+                          className="px-12 py-2 text-white rounded bg-blue-700"
                           onClick={() =>
                             hireScoutForSeason({
                               scoutId: scout.id,
@@ -190,8 +517,6 @@ export const SeasonScouts = (props) => {
                         >
                           Hire
                         </button>
-                        )
-
                       )}
                     </div>
                   </div>
