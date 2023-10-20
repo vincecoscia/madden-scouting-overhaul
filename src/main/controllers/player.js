@@ -406,34 +406,6 @@ export function playerController() {
             100
         ) / 100
 
-        // Match the Report model with the average overall data. Remember averageOverallByPosition is an object, not an array
-        // This is the data that will be inserted into the Report table
-        // avgOverall                     Float
-        // offenseOverall                 Float
-        // defenseOverall                 Float
-        // qbOverall                      Float
-        // hbOverall                      Float
-        // fbOverall                      Float
-        // wrOverall                      Float
-        // teOverall                      Float
-        // ltOverall                      Float
-        // lgOverall                      Float
-        // cOverall                       Float
-        // rgOverall                      Float
-        // rtOverall                      Float
-        // leOverall                      Float
-        // reOverall                      Float
-        // dtOverall                      Float
-        // lolbOverall                    Float
-        // mlbOverall                     Float
-        // rolbOverall                    Float
-        // cbOverall                      Float
-        // fsOverall                      Float
-        // ssOverall                      Float
-        // kOverall                       Float
-        // pOverall                       Float
-        // seasonId                       Int
-
         const prismaReportRecords = {
           avgOverall: averageOverall,
           offenseOverall: averageOffenseOverall,
@@ -492,19 +464,6 @@ export function playerController() {
 
         await Promise.all(createBestPromises)
         await Promise.all(createWorstPromises)
-        
-
-        console.log('Average overall:', averageOverall)
-
-        console.log('Average overall by position:', averageOverallByPosition)
-
-        console.log('Average offense overall:', averageOffenseOverall)
-
-        console.log('Average defense overall:', averageDefenseOverall)
-
-        console.log('Top 3:', topThree)
-
-        console.log('Bottom 3:', bottomThree)
 
         // Import DraftPick table
         const draftPickTable = franchise.getTableById(5593)

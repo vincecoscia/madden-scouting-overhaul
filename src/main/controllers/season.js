@@ -10,6 +10,11 @@ export function seasonController() {
       const season = prisma.season.findUnique({
         where: {
           id: seasonId
+        },
+        include: {
+          best: true,
+          worst: true,
+          report: true,
         }
       });
       console.log('Prisma season result:', season);

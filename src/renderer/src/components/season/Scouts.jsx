@@ -9,6 +9,9 @@ export const SeasonScouts = (props) => {
   const [sortedFranchiseScouts, setSortedFranchiseScouts] = useState(franchiseScouts)
   const [sortState, setSortState] = useState({ attribute: null, order: 'default' })
 
+  console.log('BEST POSITIONS', season.best[0].position)
+  console.log('WORST POSITIONS', season.worst)
+
   const { mutateAsync: hireScoutForSeason } = useHireScoutForSeason({
     onSuccess: () => {
       console.log('hireScoutForSeason success')
@@ -67,13 +70,42 @@ export const SeasonScouts = (props) => {
 
   return (
     <div>
-      <div className="pr-4  rounded mb-4 bg-blue-700 w-fit flex items-center">
-        <p className="py-5 px-4 rounded-l bg-neutral-800">Season Balance: </p>
-        {season.balance > 999 ? (
-          <p className="py-4 ml-4 text-xl">{convertThousands(season.balance)}M</p>
-        ) : (
-          <p className="py-4 ml-4 text-xl">{season.balance}K</p>
-        )}
+      <div className="flex gap-x-4">
+        <div className="pr-4  rounded mb-4 bg-blue-700 w-fit flex items-center">
+          <p className="py-5 px-4 rounded-l bg-neutral-800">Season Balance: </p>
+          {season.balance > 999 ? (
+            <p className="py-4 ml-4 text-xl">{convertThousands(season.balance)}M</p>
+          ) : (
+            <p className="py-4 ml-4 text-xl">{season.balance}K</p>
+          )}
+        </div>
+        <div className="pr-4  rounded mb-4 bg-blue-700 w-fit flex items-center">
+          <p className="py-5 px-4 rounded-l bg-neutral-800">Best Positions</p>
+          <div className="flex gap-x-2 ml-4">
+            {season.best.map((best, index) => {
+              // Include index here
+              return (
+                <p className="text-xl text-white">
+                  {best.position ? best.position.toString() : ''}
+                  {index !== season.best.length - 1 ? ',' : ''}
+                </p>
+              )
+            })}
+          </div>
+        </div>
+        <div className="pr-4  rounded mb-4 bg-blue-700 w-fit flex items-center">
+          <p className="py-5 px-4 rounded-l bg-neutral-800">Worst Positions</p>
+          <div className="flex gap-x-2 ml-4">
+            {season.worst.map((worst, index) => {
+              return (
+                <p className="text-xl text-white">
+                  {worst.position ? worst.position.toString() : ''}
+                  {index !== season.worst.length - 1 ? ',' : ''}
+                </p>
+              )
+            })}
+          </div>
+        </div>
       </div>
       <div className="grid grid-cols-3 gap-x-4 h-[740px]">
         <div className="flex flex-col rounded bg-neutral-900 h-[740px]">
@@ -149,302 +181,266 @@ export const SeasonScouts = (props) => {
             <p className="text-xl">Available Scouts</p>
           </div>
           <div className="flex items-center rounded bg-neutral-800 gap-y-2 mx-2 mt-2">
-              <button
-                className="border-r border-gray-600 flex flex-col justify-center items-center w-80 py-4 relative"
-                onClick={() => sortScouts('firstName')}
+            <button
+              className="border-r border-gray-600 flex flex-col justify-center items-center w-80 py-4 relative"
+              onClick={() => sortScouts('firstName')}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+                  sortState.order === 'asc' && sortState.attribute === 'firstName'
+                    ? 'block'
+                    : 'hidden'
+                }`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
-                    sortState.order === 'asc' && sortState.attribute === 'firstName'
-                      ? 'block'
-                      : 'hidden'
-                  }`}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4.5 15.75l7.5-7.5 7.5 7.5"
-                  />
-                </svg>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+              </svg>
 
-                <p className="">Name</p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
-                    sortState.order === 'desc' && sortState.attribute === 'firstName'
-                      ? 'block'
-                      : 'hidden'
-                  }`}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                  />
-                </svg>
-              </button>
-              <button
-                className="border-r border-gray-600 flex h-full items-center justify-center w-24 py-4 relative"
-                onClick={() => sortScouts('evaluation')}
+              <p className="">Name</p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+                  sortState.order === 'desc' && sortState.attribute === 'firstName'
+                    ? 'block'
+                    : 'hidden'
+                }`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
-                    sortState.order === 'asc' && sortState.attribute === 'evaluation'
-                      ? 'block'
-                      : 'hidden'
-                  }`}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4.5 15.75l7.5-7.5 7.5 7.5"
-                  />
-                </svg>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </button>
+            <button
+              className="border-r border-gray-600 flex h-full items-center justify-center w-24 py-4 relative"
+              onClick={() => sortScouts('evaluation')}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+                  sortState.order === 'asc' && sortState.attribute === 'evaluation'
+                    ? 'block'
+                    : 'hidden'
+                }`}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+              </svg>
 
-                <p className="">Evaluation</p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
-                    sortState.order === 'desc' && sortState.attribute === 'evaluation'
-                      ? 'block'
-                      : 'hidden'
-                  }`}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                  />
-                </svg>
-              </button>
-              <button
-                className="border-r border-gray-600 flex h-full items-center justify-center w-24 py-4 relative"
-                onClick={() => sortScouts('reputation')}
+              <p className="">Evaluation</p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+                  sortState.order === 'desc' && sortState.attribute === 'evaluation'
+                    ? 'block'
+                    : 'hidden'
+                }`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
-                    sortState.order === 'asc' && sortState.attribute === 'reputation'
-                      ? 'block'
-                      : 'hidden'
-                  }`}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4.5 15.75l7.5-7.5 7.5 7.5"
-                  />
-                </svg>
-                <p className="">Reputation</p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
-                    sortState.order === 'desc' && sortState.attribute === 'reputation'
-                      ? 'block'
-                      : 'hidden'
-                  }`}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                  />
-                </svg>
-              </button>
-              <button
-                className="border-r border-gray-600 flex h-full items-center justify-center w-28 py-4 relative"
-                onClick={() => sortScouts('bias')}
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </button>
+            <button
+              className="border-r border-gray-600 flex h-full items-center justify-center w-24 py-4 relative"
+              onClick={() => sortScouts('reputation')}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+                  sortState.order === 'asc' && sortState.attribute === 'reputation'
+                    ? 'block'
+                    : 'hidden'
+                }`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
-                    sortState.order === 'asc' && sortState.attribute === 'bias'
-                      ? 'block'
-                      : 'hidden'
-                  }`}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4.5 15.75l7.5-7.5 7.5 7.5"
-                  />
-                </svg>
-                <p className="">Bias</p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
-                    sortState.order === 'desc' && sortState.attribute === 'bias'
-                      ? 'block'
-                      : 'hidden'
-                  }`}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                  />
-                </svg>
-              </button>
-              <button
-                className="border-r border-gray-600 flex h-full items-center justify-center w-28 py-4 relative"
-                onClick={() => sortScouts('specialty')}
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+              </svg>
+              <p className="">Reputation</p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+                  sortState.order === 'desc' && sortState.attribute === 'reputation'
+                    ? 'block'
+                    : 'hidden'
+                }`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
-                    sortState.order === 'asc' && sortState.attribute === 'specialty'
-                      ? 'block'
-                      : 'hidden'
-                  }`}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4.5 15.75l7.5-7.5 7.5 7.5"
-                  />
-                </svg>
-                <p className="">Specialty</p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
-                    sortState.order === 'desc' && sortState.attribute === 'specialty'
-                      ? 'block'
-                      : 'hidden'
-                  }`}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                  />
-                </svg>
-              </button>
-              <button
-                className="border-r border-gray-600 flex h-full items-center justify-center w-28 py-4 relative"
-                onClick={() => sortScouts('conferenceSpecialty')}
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </button>
+            <button
+              className="border-r border-gray-600 flex h-full items-center justify-center w-28 py-4 relative"
+              onClick={() => sortScouts('bias')}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+                  sortState.order === 'asc' && sortState.attribute === 'bias' ? 'block' : 'hidden'
+                }`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
-                    sortState.order === 'asc' && sortState.attribute === 'conferenceSpecialty'
-                      ? 'block'
-                      : 'hidden'
-                  }`}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4.5 15.75l7.5-7.5 7.5 7.5"
-                  />
-                </svg>
-                <p className="">Conference</p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
-                    sortState.order === 'desc' && sortState.attribute === 'conferenceSpecialty'
-                      ? 'block'
-                      : 'hidden'
-                  }`}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                  />
-                </svg>
-              </button>
-              <button
-                className="flex h-full items-center justify-center w-24 py-4 relative border-r border-gray-600"
-                onClick={() => sortScouts('cost')}
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+              </svg>
+              <p className="">Bias</p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+                  sortState.order === 'desc' && sortState.attribute === 'bias' ? 'block' : 'hidden'
+                }`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
-                    sortState.order === 'asc' && sortState.attribute === 'cost'
-                      ? 'block'
-                      : 'hidden'
-                  }`}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4.5 15.75l7.5-7.5 7.5 7.5"
-                  />
-                </svg>
-                <p className="">Cost</p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
-                    sortState.order === 'desc' && sortState.attribute === 'cost'
-                      ? 'block'
-                      : 'hidden'
-                  }`}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                  />
-                </svg>
-              </button>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </button>
+            <button
+              className="border-r border-gray-600 flex h-full items-center justify-center w-28 py-4 relative"
+              onClick={() => sortScouts('specialty')}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+                  sortState.order === 'asc' && sortState.attribute === 'specialty'
+                    ? 'block'
+                    : 'hidden'
+                }`}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+              </svg>
+              <p className="">Specialty</p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+                  sortState.order === 'desc' && sortState.attribute === 'specialty'
+                    ? 'block'
+                    : 'hidden'
+                }`}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </button>
+            <button
+              className="border-r border-gray-600 flex h-full items-center justify-center w-28 py-4 relative"
+              onClick={() => sortScouts('conferenceSpecialty')}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+                  sortState.order === 'asc' && sortState.attribute === 'conferenceSpecialty'
+                    ? 'block'
+                    : 'hidden'
+                }`}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+              </svg>
+              <p className="">Conference</p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+                  sortState.order === 'desc' && sortState.attribute === 'conferenceSpecialty'
+                    ? 'block'
+                    : 'hidden'
+                }`}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </button>
+            <button
+              className="flex h-full items-center justify-center w-24 py-4 relative border-r border-gray-600"
+              onClick={() => sortScouts('cost')}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
+                  sortState.order === 'asc' && sortState.attribute === 'cost' ? 'block' : 'hidden'
+                }`}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+              </svg>
+              <p className="">Cost</p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
+                  sortState.order === 'desc' && sortState.attribute === 'cost' ? 'block' : 'hidden'
+                }`}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </button>
           </div>
           {franchiseScouts.length > 0 ? (
             <div className="overflow-y-scroll flex flex-col gap-y-2 px-2 py-2">

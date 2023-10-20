@@ -202,6 +202,7 @@ model ScoutingInfo {
   player             Player         @relation(fields: [playerId], references: [id])
   playerId           String         @unique
   bucket             Bucket         @relation(fields: [bucketId], references: [id])
+  bucketId           String
   scout              Scout          @relation(fields: [scoutId], references: [id])
   scoutId            String
   height             Int
@@ -263,7 +264,6 @@ model ScoutingInfo {
   passBlock          Int
   passBlockPower     Int
   passBlockFinesse   Int
-  bucketId           String
 }
 
 model ScoutComment {
