@@ -107,8 +107,8 @@ export const SeasonScouts = (props) => {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-x-4 h-[740px]">
-        <div className="flex flex-col rounded bg-neutral-900 h-[740px]">
+      <div className="grid grid-cols-3 gap-x-4 h-[680px]">
+        <div className="flex flex-col rounded bg-neutral-900 h-[680px]">
           <div className="flex justify-center w-full py-2 border-b border-gray-600 ">
             <p className="text-xl">Hired Scouts</p>
           </div>
@@ -176,7 +176,7 @@ export const SeasonScouts = (props) => {
             </div>
           )}
         </div>
-        <div className="flex flex-col rounded bg-neutral-900 mb-2 col-span-2 h-[740px] overflow-hidden">
+        <div className="flex flex-col rounded bg-neutral-900 mb-2 col-span-2 h-[680px] overflow-hidden">
           <div className="flex justify-center w-full py-2 border-b border-gray-600 ">
             <p className="text-xl">Available Scouts</p>
           </div>

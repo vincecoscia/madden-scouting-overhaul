@@ -675,7 +675,7 @@ export const SeasonProspects = (props) => {
       </div>
 
       {/* Add players */}
-      <div className="flex flex-col gap-y-2 h-[610px] overflow-hidden overflow-y-scroll">
+      <div className="flex flex-col gap-y-2 h-[560px] overflow-hidden overflow-y-scroll">
         {filteredPlayers.map((player) => (
           <div className="flex rounded bg-neutral-900">
             <div className="border-r border-gray-600 flex justify-center items-center w-28">

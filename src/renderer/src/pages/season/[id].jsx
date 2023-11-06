@@ -12,6 +12,7 @@ import { SeasonScouts as Scouts } from '../../components/season/Scouts'
 import { SeasonProspects as Prospects } from '../../components/season/Prospects'
 import { BackButton } from '../../components/utilities/Buttons'
 import { Loading } from '../../components/utilities/Loading'
+import WeekTracker from '../../components/WeekTracker'
 
 function SeasonId() {
   const [selectedFilePath, setSelectedFilePath] = useState(null)
@@ -91,7 +92,13 @@ function SeasonId() {
     }
   }
 
-  if (isLoading || isFranchiseLoading || isPlayersLoading || isScoutsLoading || isDraftPicksLoading ) {
+  if (
+    isLoading ||
+    isFranchiseLoading ||
+    isPlayersLoading ||
+    isScoutsLoading ||
+    isDraftPicksLoading
+  ) {
     return <Loading />
   }
 
@@ -102,7 +109,10 @@ function SeasonId() {
           <h2 className="font-semibold text-2xl">Uploading Players</h2>
           <Loading />
           <div>
-            <button className="px-4 py-2 bg-blue-700 text-white rounded w-64" onClick={handleRefresh}>
+            <button
+              className="px-4 py-2 bg-blue-700 text-white rounded w-64"
+              onClick={handleRefresh}
+            >
               Refresh
             </button>
           </div>
@@ -173,6 +183,9 @@ function SeasonId() {
   return (
     <div className="mx-8 mt-4">
       <BackButton />
+      <div className="mt-4">
+        <WeekTracker currentWeek={season.week} />
+      </div>
 
       <div className="flex gap-x-4 mt-4 mb-4">
         <button
@@ -210,14 +223,35 @@ function SeasonId() {
       </div>
       <div>
         {activeTab === 'overview' && (
-          <Overview season={season} franchise={franchise} players={players} franchiseScouts={franchiseScouts} seasonScouts={seasonScouts} draftPicks={draftPicks} />
+          <Overview
+            season={season}
+            franchise={franchise}
+            players={players}
+            franchiseScouts={franchiseScouts}
+            seasonScouts={seasonScouts}
+            draftPicks={draftPicks}
+          />
         )}
         {activeTab === 'scouts' && (
-          <Scouts season={season} franchise={franchise} players={players} franchiseScouts={franchiseScouts} seasonScouts={seasonScouts} draftPicks={draftPicks} />
+          <Scouts
+            season={season}
+            franchise={franchise}
+            players={players}
+            franchiseScouts={franchiseScouts}
+            seasonScouts={seasonScouts}
+            draftPicks={draftPicks}
+          />
         )}
         {activeTab === 'prospects' && (
-          <Prospects season={season} franchise={franchise} players={players} franchiseScouts={franchiseScouts} seasonScouts={seasonScouts} draftPicks={draftPicks} />
-        )}  
+          <Prospects
+            season={season}
+            franchise={franchise}
+            players={players}
+            franchiseScouts={franchiseScouts}
+            seasonScouts={seasonScouts}
+            draftPicks={draftPicks}
+          />
+        )}
       </div>
     </div>
   )
