@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Portrait } from '../Portrait'
+import { useGetRelevantStats } from '../../queries/bucket'
 
 export const SeasonProspects = (props) => {
   const { players } = props
@@ -12,8 +13,8 @@ export const SeasonProspects = (props) => {
     college: '',
     conference: '',
     position: '',
-    sparq: '',
-  });
+    sparq: ''
+  })
 
   const handleTabClick = (tab) => {
     setActiveTab(tab)
@@ -85,18 +86,17 @@ export const SeasonProspects = (props) => {
   //   const filteredPlayersAgain = filteredPlayers.filter(player => {
   //     return Object.entries(filterCriteria).every(([key, value]) => {
   //       if (!value) return true; // Ignore empty criteria
-  
+
   //       if (key === 'sparq') {
   //         return player[key] > value; // Example for numeric criteria
   //       }
-  
+
   //       return player[key].toLowerCase().includes(value.toLowerCase()); // Example for text criteria
   //     });
   //   });
-  
+
   //   setFilteredPlayers(filteredPlayersAgain);
   // }, [filterCriteria, filteredPlayers]);
-  
 
   return (
     <>
@@ -420,7 +420,7 @@ export const SeasonProspects = (props) => {
       </div>
 
       {/* Add sorting for players here */}
-      <div className="flex rounded bg-neutral-900 mb-2">
+      <div className="flex rounded bg-neutral-900 mb-2 mr-3">
         <button
           className="border-r border-gray-600 flex flex-col justify-center items-center w-28 py-4 relative"
           onClick={() => sortPlayers('initialDraftRank')}
@@ -577,11 +577,8 @@ export const SeasonProspects = (props) => {
             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
           </svg>
         </button>
-        <div className='flex justify-center w-24 items-center border-r border-gray-600'>
-          <button
-            className="relative mr-4"
-            onClick={() => sortPlayers('height')}
-          >
+        <div className="flex justify-center w-24 items-center border-r border-gray-600">
+          <button className="relative mr-4" onClick={() => sortPlayers('height')}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -608,10 +605,7 @@ export const SeasonProspects = (props) => {
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
           </button>
-          <button
-            className=" relative"
-            onClick={() => sortPlayers('weight')}
-          >
+          <button className=" relative" onClick={() => sortPlayers('weight')}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -638,19 +632,19 @@ export const SeasonProspects = (props) => {
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
           </button>
-        
         </div>
-        <button className="flex flex-col justify-center w-24 items-center border-r border-gray-600 relative" onClick={() => sortPlayers('sparq')}>
-        <svg
+        <button
+          className="flex flex-col justify-center w-24 items-center border-r border-gray-600 relative"
+          onClick={() => sortPlayers('sparq')}
+        >
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
             className={`w-6 h-6 stroke-blue-600 absolute top-0 ${
-              sortState.order === 'asc' && sortState.attribute === 'sparq'
-                ? 'block'
-                : 'hidden'
+              sortState.order === 'asc' && sortState.attribute === 'sparq' ? 'block' : 'hidden'
             }`}
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
@@ -663,63 +657,90 @@ export const SeasonProspects = (props) => {
             strokeWidth={1.5}
             stroke="currentColor"
             className={`w-6 h-6 stroke-blue-600 absolute bottom-0 ${
-              sortState.order === 'desc' && sortState.attribute === 'sparq'
-                ? 'block'
-                : 'hidden'
+              sortState.order === 'desc' && sortState.attribute === 'sparq' ? 'block' : 'hidden'
             }`}
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
           </svg>
         </button>
-
+        <button className="flex-1 border-r border-gray-600">Key Attributes</button>
+        <button className="flex flex-col justify-center items-center w-56 border-gray-600 relative">
+          Scouting
+        </button>
       </div>
 
       {/* Add players */}
       <div className="flex flex-col gap-y-2 h-[560px] overflow-hidden overflow-y-scroll">
-        {filteredPlayers.map((player) => (
-          <div className="flex rounded bg-neutral-900">
-            <div className="border-r border-gray-600 flex justify-center items-center w-28">
-              <p className="text-2xl">{player.initialDraftRank}</p>
-            </div>
-            <div className="flex ml-8 w-96 pr-8 border-r border-gray-600">
-              <Portrait id={player.portrait} />
-              <div className=" flex flex-col justify-center py-2 ml-8">
-                <p className="text-xl font-semibold">
-                  {player.firstName} {player.lastName}
-                </p>
-                <p>
-                  {player.college} | <span className="">{player.conference}</span>
+        {filteredPlayers.map((player) => {
+          const {
+            data: relevantStats,
+            isLoading: isRelevantStatsLoading,
+            isError
+          } = useGetRelevantStats(player.position)
+
+          console.log('RELEVANT STATS', relevantStats)
+          return (
+            <div className="flex rounded bg-neutral-900">
+              <div className="border-r border-gray-600 flex justify-center items-center w-28">
+                <p className="text-2xl">{player.initialDraftRank}</p>
+              </div>
+              <div className="flex ml-8 w-96 pr-8 border-r border-gray-600">
+                <Portrait id={player.portrait} />
+                <div className=" flex flex-col justify-center py-2 ml-8">
+                  <p className="text-xl font-semibold">
+                    {player.firstName} {player.lastName}
+                  </p>
+                  <p>
+                    {player.college} | <span className="">{player.conference}</span>
+                  </p>
+                </div>
+              </div>
+              <div className="flex justify-center items-center w-24 border-r border-gray-600">
+                <p className="text-3xl font-semibold">{player.position}</p>
+              </div>
+              <div className="flex flex-col justify-center w-24 items-center border-r border-gray-600">
+                <p className="text-xl font-semibold">{convertInchesToFeet(player.height)}</p>
+                <p className="text-2xl">{player.weight}</p>
+              </div>
+              <div className="flex flex-col justify-center w-24 items-center border-r border-gray-600 relative">
+                <svg
+                  fill="#000000"
+                  className={`h-16 w-16 absolute top-50% right-50% stroke-slate-50 stroke-2 rotate-90 ${determineSparqColor(
+                    player.sparq
+                  )}`}
+                  version="1.1"
+                  id="Capa_1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
+                  viewBox="0 0 184.751 184.751"
+                  xmlSpace="preserve"
+                >
+                  <path d="M0,92.375l46.188-80h92.378l46.185,80l-46.185,80H46.188L0,92.375z" />
+                </svg>
+                <p className="text-2xl z-10 drop-shadow-[0_1.4px_1.4px_rgba(0,0,0,1)]">
+                  {player.sparq}
                 </p>
               </div>
+              <div className="flex flex-1 justify-between mt-2 border-r border-gray-600">
+                {!isRelevantStatsLoading && relevantStats.length > 0 && (
+                  <div className="flex justify-between w-full mx-8">
+                    {relevantStats.slice(0, 5).map((statObject, index) => (
+                      <div key={index} className='flex flex-col items-center w-36 text-center'>
+                        <p className="text-sm mb-4">
+                          {statObject.name}
+                        </p>
+                        <p className='text-2xl'>{player[statObject.stat]}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col justify-center items-center w-56">
+                <p className="text-xl">Scouting</p>
+              </div>
             </div>
-            <div className="flex justify-center items-center w-24 border-r border-gray-600">
-              <p className="text-3xl font-semibold">{player.position}</p>
-            </div>
-            <div className="flex flex-col justify-center w-24 items-center border-r border-gray-600">
-              <p className="text-xl font-semibold">{convertInchesToFeet(player.height)}</p>
-              <p className="text-2xl">{player.weight}</p>
-            </div>
-            <div className="flex flex-col justify-center w-24 items-center border-r border-gray-600 relative">
-              <svg
-                fill="#000000"
-                className={`h-16 w-16 absolute top-50% right-50% stroke-slate-50 stroke-2 rotate-90 ${determineSparqColor(
-                  player.sparq
-                )}`}
-                version="1.1"
-                id="Capa_1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlnsXlink="http://www.w3.org/1999/xlink"
-                viewBox="0 0 184.751 184.751"
-                xmlSpace="preserve"
-              >
-                <path d="M0,92.375l46.188-80h92.378l46.185,80l-46.185,80H46.188L0,92.375z" />
-              </svg>
-              <p className="text-2xl z-10 drop-shadow-[0_1.4px_1.4px_rgba(0,0,0,1)]">
-                {player.sparq}
-              </p>
-            </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </>
   )

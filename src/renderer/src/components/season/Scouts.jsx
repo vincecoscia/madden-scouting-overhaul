@@ -1,5 +1,6 @@
 import { Portrait } from '../Portrait'
 import { useState } from 'react'
+import { MessageModal } from '../utilities/MessageModal'
 import { useHireScoutForSeason, useFireScoutFromSeason } from '../../queries/scout'
 import { useUpdateSeason } from '../../queries/season'
 import { toast } from 'react-toastify'

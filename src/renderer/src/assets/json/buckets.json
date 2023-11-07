@@ -1,47 +1,708 @@
 [
   {
-    "position": "QB",
-    "relevantStats": [
-      "awareness",
-      "breakSack",
-      "throwAccuracy",
-      "throwAccuracyDeep",
-      "throwAccuracyMid",
-      "throwAccuracyShort",
-      "throwOnTheRun",
-      "throwPower",
-      "throwUnderPressure",
-      "playAction"
-    ]
+      "position": "QB",
+      "relevantStats": [
+          {
+              "name": "Throw Accuracy",
+              "stat": "throwAccuracy"
+          },
+          {
+              "name": "Throw Power",
+              "stat": "throwPower"
+          },
+          {
+              "name": "Throw Accuracy Short",
+              "stat": "throwAccuracyShort"
+          },
+          {
+              "name": "Throw Accuracy Mid",
+              "stat": "throwAccuracyMid"
+          },
+          {
+              "name": "Throw Accuracy Deep",
+              "stat": "throwAccuracyDeep"
+          },
+          {
+              "name": "Break Sack",
+              "stat": "breakSack"
+          },
+          {
+              "name": "Throw On The Run",
+              "stat": "throwOnTheRun"
+          },
+          {
+              "name": "Throw Under Pressure",
+              "stat": "throwUnderPressure"
+          },
+          {
+              "name": "Play Action",
+              "stat": "playAction"
+          },
+          {
+              "name": "Acceleration",
+              "stat": "acceleration"
+          },
+          {
+              "name": "Speed",
+              "stat": "speed"
+          },
+          {
+              "name": "Jumping",
+              "stat": "jumping"
+          },
+          {
+              "name": "Agility",
+              "stat": "agility"
+          },
+          {
+              "name": "Strength",
+              "stat": "strength"
+          },
+          {
+              "name": "Change Of Direction",
+              "stat": "changeOfDirection"
+          },
+          {
+              "name": "Awareness",
+              "stat": "awareness"
+          },
+          {
+              "name": "Injury",
+              "stat": "injury"
+          }
+      ]
   },
   {
-    "position": "S",
-    "relevantStats": [
-      "awareness",
-      "hitPower",
-      "catching",
-      "catchInTraffic",
-      "press",
-      "pursuit",
-      "tackle",
-      "zoneCoverage",
-      "manCoverage"
-    ]
+      "position": "S",
+      "relevantStats": [
+          {
+              "name": "Zone Coverage",
+              "stat": "zoneCoverage"
+          },
+          {
+              "name": "Man Coverage",
+              "stat": "manCoverage"
+          },
+          {
+              "name": "Hit Power",
+              "stat": "hitPower"
+          },
+          {
+              "name": "Catching",
+              "stat": "catch"
+          },
+          {
+              "name": "Tackle",
+              "stat": "tackle"
+          },
+          {
+              "name": "Catch In Traffic",
+              "stat": "catchInTraffic"
+          },
+          {
+              "name": "Press",
+              "stat": "press"
+          },
+          {
+              "name": "Pursuit",
+              "stat": "pursuit"
+          },
+          {
+              "name": "Acceleration",
+              "stat": "acceleration"
+          },
+          {
+              "name": "Speed",
+              "stat": "speed"
+          },
+          {
+              "name": "Jumping",
+              "stat": "jumping"
+          },
+          {
+              "name": "Agility",
+              "stat": "agility"
+          },
+          {
+              "name": "Strength",
+              "stat": "strength"
+          },
+          {
+              "name": "Change Of Direction",
+              "stat": "changeOfDirection"
+          },
+          {
+              "name": "Awareness",
+              "stat": "awareness"
+          },
+          {
+              "name": "Injury",
+              "stat": "injury"
+          }
+      ]
   },
   {
-    "position": "OL",
-    "relevantStats": [
-      "awareness",
-      "impactBlocking",
-      "runBlockPower",
-      "runBlockFinesse",
-      "runBlock",
-      "passBlockFinesse",
-      "passBlockPower",
-      "passBlock"
-    ]
+      "position": "OL",
+      "relevantStats": [
+          {
+              "name": "Run Block",
+              "stat": "runBlock"
+          },
+          {
+              "name": "Pass Block",
+              "stat": "passBlock"
+          },
+          {
+              "name": "Run Block Power",
+              "stat": "runBlockPower"
+          },
+          {
+              "name": "Run Block Finesse",
+              "stat": "runBlockFinesse"
+          },
+          {
+              "name": "Pass Block Power",
+              "stat": "passBlockPower"
+          },
+          {
+              "name": "Pass Block Finesse",
+              "stat": "passBlockFinesse"
+          },
+          {
+              "name": "Impact Blocking",
+              "stat": "impactBlocking"
+          },
+          {
+              "name": "Acceleration",
+              "stat": "acceleration"
+          },
+          {
+              "name": "Speed",
+              "stat": "speed"
+          },
+          {
+              "name": "Jumping",
+              "stat": "jumping"
+          },
+          {
+              "name": "Agility",
+              "stat": "agility"
+          },
+          {
+              "name": "Strength",
+              "stat": "strength"
+          },
+          {
+              "name": "Change Of Direction",
+              "stat": "changeOfDirection"
+          },
+          {
+              "name": "Awareness",
+              "stat": "awareness"
+          },
+          {
+              "name": "Injury",
+              "stat": "injury"
+          }
+      ]
   },
   {
-    
+      "position": "CB",
+      "relevantStats": [
+          {
+              "name": "Zone Coverage",
+              "stat": "zoneCoverage"
+          },
+          {
+              "name": "Man Coverage",
+              "stat": "manCoverage"
+          },
+          {
+              "name": "Press",
+              "stat": "press"
+          },
+          {
+              "name": "Tackle",
+              "stat": "tackle"
+          },
+          {
+              "name": "Catching",
+              "stat": "catch"
+          },
+          {
+              "name": "Hit Power",
+              "stat": "hitPower"
+          },
+          {
+              "name": "Catch In Traffic",
+              "stat": "catchInTraffic"
+          },
+          {
+              "name": "Pursuit",
+              "stat": "pursuit"
+          },
+          {
+              "name": "Acceleration",
+              "stat": "acceleration"
+          },
+          {
+              "name": "Speed",
+              "stat": "speed"
+          },
+          {
+              "name": "Jumping",
+              "stat": "jumping"
+          },
+          {
+              "name": "Agility",
+              "stat": "agility"
+          },
+          {
+              "name": "Strength",
+              "stat": "strength"
+          },
+          {
+              "name": "Change Of Direction",
+              "stat": "changeOfDirection"
+          },
+          {
+              "name": "Awareness",
+              "stat": "awareness"
+          },
+          {
+              "name": "Injury",
+              "stat": "injury"
+          }
+      ]
+  },
+  {
+      "position": "WR",
+      "relevantStats": [
+          {
+              "name": "Catch",
+              "stat": "catch"
+          },
+          {
+              "name": "Catch In Traffic",
+              "stat": "catchInTraffic"
+          },
+          {
+              "name": "Spectacular Catch",
+              "stat": "spectacularCatch"
+          },
+          {
+              "name": "Release",
+              "stat": "release"
+          },
+          {
+              "name": "Deep Route",
+              "stat": "deepRoute"
+          },
+          {
+              "name": "Medium Route",
+              "stat": "mediumRoute"
+          },
+          {
+              "name": "Short Route",
+              "stat": "shortRoute"
+          },
+          {
+              "name": "Spin Move",
+              "stat": "spinMove"
+          },
+          {
+              "name": "Juke Move",
+              "stat": "jukeMove"
+          },
+          {
+              "name": "Stiff Arm",
+              "stat": "stiffArm"
+          },
+          {
+              "name": "Truck",
+              "stat": "truck"
+          },
+          {
+              "name": "Acceleration",
+              "stat": "acceleration"
+          },
+          {
+              "name": "Speed",
+              "stat": "speed"
+          },
+          {
+              "name": "Jumping",
+              "stat": "jumping"
+          },
+          {
+              "name": "Agility",
+              "stat": "agility"
+          },
+          {
+              "name": "Strength",
+              "stat": "strength"
+          },
+          {
+              "name": "Change Of Direction",
+              "stat": "changeOfDirection"
+          },
+          {
+              "name": "Awareness",
+              "stat": "awareness"
+          },
+          {
+              "name": "Injury",
+              "stat": "injury"
+          }
+      ]
+  },
+  {
+      "position": "HB",
+      "relevantStats": [
+          {
+              "name": "Carrying",
+              "stat": "carrying"
+          },
+          {
+              "name": "Bc Vision",
+              "stat": "bcVision"
+          },
+          {
+              "name": "Break Tackle",
+              "stat": "breakTackle"
+          },
+          {
+              "name": "Juke Move",
+              "stat": "jukeMove"
+          },
+          {
+              "name": "Catch",
+              "stat": "catch"
+          },
+          {
+              "name": "Spin Move",
+              "stat": "spinMove"
+          },
+          {
+              "name": "Stiff Arm",
+              "stat": "stiffArm"
+          },
+          {
+              "name": "Truck",
+              "stat": "truck"
+          },
+          {
+              "name": "Catch In Traffic",
+              "stat": "catchInTraffic"
+          },
+          {
+              "name": "Spectacular Catch",
+              "stat": "spectacularCatch"
+          },
+          {
+              "name": "Acceleration",
+              "stat": "acceleration"
+          },
+          {
+              "name": "Speed",
+              "stat": "speed"
+          },
+          {
+              "name": "Jumping",
+              "stat": "jumping"
+          },
+          {
+              "name": "Agility",
+              "stat": "agility"
+          },
+          {
+              "name": "Strength",
+              "stat": "strength"
+          },
+          {
+              "name": "Change Of Direction",
+              "stat": "changeOfDirection"
+          },
+          {
+              "name": "Awareness",
+              "stat": "awareness"
+          },
+          {
+              "name": "Injury",
+              "stat": "injury"
+          }
+      ]
+  },
+  {
+      "position": "TE",
+      "relevantStats": [
+          {
+              "name": "Catch",
+              "stat": "catch"
+          },
+          {
+              "name": "Catch In Traffic",
+              "stat": "catchInTraffic"
+          },
+          {
+              "name": "Spectacular Catch",
+              "stat": "spectacularCatch"
+          },
+          {
+              "name": "Release",
+              "stat": "release"
+          },
+          {
+              "name": "Short Route",
+              "stat": "shortRoute"
+          },
+          {
+              "name": "Medium Route",
+              "stat": "mediumRoute"
+          },
+          {
+              "name": "Deep Route",
+              "stat": "deepRoute"
+          },
+          {
+              "name": "Run Block",
+              "stat": "runBlock"
+          },
+          {
+              "name": "Run Block Power",
+              "stat": "runBlockPower"
+          },
+          {
+              "name": "Run Block Finesse",
+              "stat": "runBlockFinesse"
+          },
+          {
+              "name": "Impact Blocking",
+              "stat": "impactBlocking"
+          },
+          {
+              "name": "Spin Move",
+              "stat": "spinMove"
+          },
+          {
+              "name": "Juke Move",
+              "stat": "jukeMove"
+          },
+          {
+              "name": "Stiff Arm",
+              "stat": "stiffArm"
+          },
+          {
+              "name": "Truck",
+              "stat": "truck"
+          },
+          {
+              "name": "Acceleration",
+              "stat": "acceleration"
+          },
+          {
+              "name": "Speed",
+              "stat": "speed"
+          },
+          {
+              "name": "Jumping",
+              "stat": "jumping"
+          },
+          {
+              "name": "Agility",
+              "stat": "agility"
+          },
+          {
+              "name": "Strength",
+              "stat": "strength"
+          },
+          {
+              "name": "Change Of Direction",
+              "stat": "changeOfDirection"
+          },
+          {
+              "name": "Awareness",
+              "stat": "awareness"
+          },
+          {
+              "name": "Injury",
+              "stat": "injury"
+          }
+      ]
+  },
+  {
+      "position": "DL",
+      "relevantStats": [
+          {
+              "name": "Block Shed",
+              "stat": "blockShed"
+          },
+          {
+              "name": "Finesse Moves",
+              "stat": "finesseMoves"
+          },
+          {
+              "name": "Power Moves",
+              "stat": "powerMoves"
+          },
+          {
+              "name": "Tackle",
+              "stat": "tackle"
+          },
+          {
+              "name": "Hit Power",
+              "stat": "hitPower"
+          },
+          {
+              "name": "Pursuit",
+              "stat": "pursuit"
+          },
+          {
+              "name": "Acceleration",
+              "stat": "acceleration"
+          },
+          {
+              "name": "Speed",
+              "stat": "speed"
+          },
+          {
+              "name": "Jumping",
+              "stat": "jumping"
+          },
+          {
+              "name": "Agility",
+              "stat": "agility"
+          },
+          {
+              "name": "Strength",
+              "stat": "strength"
+          },
+          {
+              "name": "Change Of Direction",
+              "stat": "changeOfDirection"
+          },
+          {
+              "name": "Awareness",
+              "stat": "awareness"
+          },
+          {
+              "name": "Injury",
+              "stat": "injury"
+          }
+      ]
+  },
+  {
+      "position": "LB",
+      "relevantStats": [
+          {
+              "name": "Zone Coverage",
+              "stat": "zoneCoverage"
+          },
+          {
+              "name": "Man Coverage",
+              "stat": "manCoverage"
+          },
+          {
+              "name": "Finesse Moves",
+              "stat": "finesseMoves"
+          },
+          {
+              "name": "Power Moves",
+              "stat": "powerMoves"
+          },
+          {
+              "name": "Tackle",
+              "stat": "tackle"
+          },
+          {
+              "name": "Block Shed",
+              "stat": "blockShed"
+          },
+          {
+              "name": "Hit Power",
+              "stat": "hitPower"
+          },
+          {
+              "name": "Pursuit",
+              "stat": "pursuit"
+          },
+          {
+              "name": "Acceleration",
+              "stat": "acceleration"
+          },
+          {
+              "name": "Speed",
+              "stat": "speed"
+          },
+          {
+              "name": "Jumping",
+              "stat": "jumping"
+          },
+          {
+              "name": "Agility",
+              "stat": "agility"
+          },
+          {
+              "name": "Strength",
+              "stat": "strength"
+          },
+          {
+              "name": "Change Of Direction",
+              "stat": "changeOfDirection"
+          },
+          {
+              "name": "Awareness",
+              "stat": "awareness"
+          },
+          {
+              "name": "Injury",
+              "stat": "injury"
+          }
+      ]
+  },
+  {
+      "position": "K",
+      "relevantStats": [
+          {
+              "name": "Kick Power",
+              "stat": "kickPower"
+          },
+          {
+              "name": "Kick Accuracy",
+              "stat": "kickAccuracy"
+          },
+          {
+              "name": "Awareness",
+              "stat": "awareness"
+          },
+          {
+              "name": "Strength",
+              "stat": "strength"
+          },
+          {
+              "name": "Speed",
+              "stat": "speed"
+          },
+          {
+              "name": "Acceleration",
+              "stat": "acceleration"
+          },
+          {
+              "name": "Jumping",
+              "stat": "jumping"
+          },
+          {
+              "name": "Agility",
+              "stat": "agility"
+          },
+          {
+              "name": "Change Of Direction",
+              "stat": "changeOfDirection"
+          },
+          {
+              "name": "Injury",
+              "stat": "injury"
+          }
+      ]
   }
 ]
