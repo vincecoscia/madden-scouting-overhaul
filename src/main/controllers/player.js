@@ -39,26 +39,38 @@ export function playerController() {
     }
   })
 
-  ipcMain.handle('get-players', async (event, seasonId) => {
+  ipcMain.handle('get-players', async (event, { seasonId, sortBy, sortOrder, position, searchTerm }) => {
     try {
-      console.log('Received get-players request')
-      console.log('seasonId:', seasonId)
-      // Get players by season from database using Prisma and sort by overall initialDraftRank
+      const where = {
+        seasonId: seasonId
+      }
+      
+      if (position) {
+        where.position = position
+      }
+      
+      if (searchTerm) {
+        where.OR = [
+          { firstName: { contains: searchTerm, mode: 'insensitive' } },
+          { lastName: { contains: searchTerm, mode: 'insensitive' } },
+          { college: { contains: searchTerm, mode: 'insensitive' } }
+        ]
+      }
 
       const players = await prisma.player.findMany({
-        where: {
-          seasonId: seasonId
+        where,
+        orderBy: sortBy ? {
+          [sortBy]: sortOrder
+        } : {
+          initialDraftRank: 'asc'
         },
-        orderBy: [
-          {
-            initialDraftRank: 'asc'
-          }
-        ]
+        take: 100
       })
-      // console.log('Prisma players result:', players);
+
       return players
     } catch (error) {
       console.error('Error handling get-players:', error)
+      throw error
     }
   })
 
@@ -467,7 +479,7 @@ export function playerController() {
 
         // Import DraftPick table
         const draftPickTable = franchise.getTableById(5593)
-        // console.log('DraftPick table obtained:', !!draftPickTable)
+        console.log('DraftPick table obtained:', !!draftPickTable)
 
         // Get all records from the DraftPick table
         const draftPickRecords = await draftPickTable.readRecords()

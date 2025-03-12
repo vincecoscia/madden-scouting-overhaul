@@ -533,13 +533,6 @@ ipcMain.on('upload-file', (event, filePath) => {
           passBlockFinesse: record.PassBlockFinesseRating
         }))
 
-        indexedRecords.forEach((record, index) => {
-          if (index < 10) {
-            // Print the ContractStatus of the first 10 records
-            console.log(record.contractStatus)
-          }
-        })
-
         const filteredPlayerTable = indexedRecords.filter(
           (record) => record.contractStatus === 'Draft'
         )
@@ -595,10 +588,9 @@ ipcMain.on('upload-file', (event, filePath) => {
         }))
 
         console.log('Combined records:', combinedRecordsWithPlayerData.length)
-
+        
         const prismaRecords = combinedRecordsWithPlayerData.map((record) => ({
           // Player fields
-          playerID: record.playerID,
           firstName: record.firstName,
           lastName: record.lastName,
           position: record.position,
@@ -608,68 +600,66 @@ ipcMain.on('upload-file', (event, filePath) => {
           weight: record.weight,
           overall: record.overall,
           traitDevelopment: record.traitDevelopment,
-          contractStatus: record.contractStatus,
-          motivation1: record.motivation1,
-          motivation2: record.motivation2,
-          motivation3: record.motivation3,
-          hitPower: record.hitPower,
-          jumping: record.jumping,
-          agility: record.agility,
+          speed: record.speed,
+          changeOfDirection: record.changeOfDirection,
+          strength: record.strength,
           acceleration: record.acceleration,
-          kickPower: record.kickPower,
-          kickAccuracy: record.kickAccuracy,
-          breakSack: record.breakSack,
-          blockShed: record.blockShed,
-          bcVision: record.bcVision,
+          agility: record.agility,
+          jumping: record.jumping,
+          injury: record.injury,
           awareness: record.awareness,
-          catchInTraffic: record.catchInTraffic,
-          catch: record.catch,
+          stamina: record.stamina,
           carrying: record.carrying,
           breakTackle: record.breakTackle,
-          deepRoute: record.deepRoute,
-          mediumRoute: record.mediumRoute,
-          shortRoute: record.shortRoute,
-          confidence: record.confidence,
-          changeOfDirection: record.changeOfDirection,
-          impactBlocking: record.impactBlocking,
-          finesseMoves: record.finesseMoves,
-          powerMoves: record.powerMoves,
-          jukeMove: record.jukeMove,
-          injury: record.injury,
-          kickReturn: record.kickReturn,
-          manCoverage: record.manCoverage,
-          longSnapping: record.longSnapping,
-          leadBlock: record.leadBlock,
-          press: record.press,
-          runBlock: record.runBlock,
-          runBlockPower: record.runBlockPower,
-          runBlockFinesse: record.runBlockFinesse,
-          release: record.release,
-          pursuit: record.pursuit,
-          speed: record.speed,
-          spectacularCatch: record.spectacularCatch,
-          strength: record.strength,
-          stiffArm: record.stiffArm,
-          stamina: record.stamina,
+          bcVision: record.bcVision,
           spinMove: record.spinMove,
+          stiffArm: record.stiffArm,
+          jukeMove: record.jukeMove,
           throwAccuracy: record.throwAccuracy,
           throwAccuracyShort: record.throwAccuracyShort,
           throwAccuracyMid: record.throwAccuracyMid,
           throwAccuracyDeep: record.throwAccuracyDeep,
-          tackle: record.tackle,
           throwUnderPressure: record.throwUnderPressure,
           throwPower: record.throwPower,
           throwOnTheRun: record.throwOnTheRun,
-          zoneCoverage: record.zoneCoverage,
-          trucking: record.trucking,
-          toughness: record.toughness,
           playAction: record.playAction,
+          breakSack: record.breakSack,
+          catch: record.catch,
+          release: record.release,
+          catchInTraffic: record.catchInTraffic,
+          spectacularCatch: record.spectacularCatch,
+          shortRoute: record.shortRoute,
+          mediumRoute: record.mediumRoute,
+          deepRoute: record.deepRoute,
+          tackle: record.tackle,
+          hitPower: record.hitPower,
+          blockShed: record.blockShed,
+          finesseMoves: record.finesseMoves,
+          powerMoves: record.powerMoves,
+          press: record.press,
+          pursuit: record.pursuit,
+          manCoverage: record.manCoverage,
+          zoneCoverage: record.zoneCoverage,
+          impactBlocking: record.impactBlocking,
+          leadBlock: record.leadBlock,
+          runBlock: record.runBlock,
+          runBlockPower: record.runBlockPower,
+          runBlockFinesse: record.runBlockFinesse,
+          trucking: record.trucking,
           passBlock: record.passBlock,
           passBlockPower: record.passBlockPower,
           passBlockFinesse: record.passBlockFinesse,
-
+          kickPower: record.kickPower,
+          kickAccuracy: record.kickAccuracy,
+          kickReturn: record.kickReturn,
+          longSnapping: record.longSnapping,
+          toughness: record.toughness,
+          confidence: record.confidence,
+          motivation1: record.motivation1,
+          motivation2: record.motivation2,
+          motivation3: record.motivation3,
+          
           // DraftPlayer fields
-          isVisible: record.isVisible,
           proDayThreeConeDrill: record.proDayThreeConeDrill,
           proDayTwentyYardShuttle: record.proDayTwentyYardShuttle,
           proDayVerticalJump: record.proDayVerticalJump,
@@ -690,22 +680,8 @@ ipcMain.on('upload-file', (event, filePath) => {
         console.log('Prisma records:', prismaRecords.length)
         // console.log('Prisma records:', prismaRecords)
 
-        try {
-          // await prisma.player.createMany({
-          //   data: prismaRecords,
-          //   skipDuplicates: true,
-          // });
-          const createPlayersPromises = prismaRecords.map((record) =>
-            prisma.player.create({ data: record })
-          )
-          await Promise.all(createPlayersPromises)
-        } catch (error) {
-          console.error('Error creating records:', error)
-        } finally {
-          console.log('Records created')
-
-          await prisma.$disconnect()
-        }
+        // Return records to renderer process
+        event.sender.send('player-data', prismaRecords)
 
         // console.log('Simplified records:', simplifiedRecords);
       } catch (error) {

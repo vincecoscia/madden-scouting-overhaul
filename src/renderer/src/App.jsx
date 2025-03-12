@@ -9,6 +9,7 @@ import CreateFranchise from './pages/franchise/create'
 import FranchiseId from './pages/franchise/[id]'
 import SeasonId from './pages/season/[id]'
 import Upload from './components/Upload'
+import CheatSheet from './pages/CheatSheet'
 
 const queryClient = new QueryClient()
 
@@ -44,10 +45,12 @@ function App() {
             <Router>
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/cheatsheet" element={<CheatSheet />} />
                 <Route path="/upload" element={<Upload />} />
                 <Route path="/franchise/:id" element={<FranchiseId />} />
                 <Route path="/franchise/create" element={<CreateFranchise />} /> 
                 <Route path="/season/:id" element={<SeasonId />} />
+
               </Routes>
             </Router>
           </div>

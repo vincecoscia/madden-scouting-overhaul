@@ -1,31 +1,25 @@
-import { useState, useEffect } from 'react'
-import { Portrait } from '../Portrait'
-import { useGetRelevantStats } from '../../queries/bucket'
+import { useState } from 'react'
+import { useDebounce } from 'use-debounce'
+import { useGetAllPlayers } from '../../queries/player'
+import { PlayerRow } from './PlayerRow'
 
-export const SeasonProspects = (props) => {
-  const { players } = props
+export const SeasonProspects = ({ seasonId }) => {
   const [activeTab, setActiveTab] = useState('all')
-  const [filteredPlayers, setFilteredPlayers] = useState(players)
   const [isFilterByOpen, setIsFilterByOpen] = useState(false)
   const [sortState, setSortState] = useState({ attribute: null, order: 'default' })
-  const [filterCriteria, setFilterCriteria] = useState({
-    firstName: '',
-    college: '',
-    conference: '',
-    position: '',
-    sparq: ''
+  const [searchTerm, setSearchTerm] = useState('')
+  const [debouncedSearchTerm] = useDebounce(searchTerm, 300)
+
+  const { data: players = [], refetch } = useGetAllPlayers(seasonId, {
+    position: activeTab === 'all' ? undefined : activeTab,
+    sortBy: sortState.attribute,
+    sortOrder: sortState.order,
+    searchTerm: debouncedSearchTerm
   })
 
   const handleTabClick = (tab) => {
     setActiveTab(tab)
-
-    if (tab === 'all') {
-      setSortState({ attribute: null, order: 'default' })
-      setFilteredPlayers(players)
-    } else {
-      setSortState({ attribute: null, order: 'default' })
-      setFilteredPlayers(players.filter((player) => player.position === tab))
-    }
+    setSortState({ attribute: null, order: 'default' })
   }
 
   const convertInchesToFeet = (inches) => {
@@ -46,16 +40,7 @@ export const SeasonProspects = (props) => {
     }
   }
 
-  // const handleFilterBy = (attribute, value) => {
-  //   setFilterCriteria(prevCriteria => ({
-  //     ...prevCriteria,
-  //     [attribute]: value,
-  //   }));
-  // };
-
   const sortPlayers = (sortBy) => {
-    console.log('sortBy:', sortBy)
-
     let order = 'asc'
     if (sortState.attribute === sortBy) {
       order = sortState.order === 'asc' ? 'desc' : sortState.order === 'desc' ? 'default' : 'asc'
@@ -63,40 +48,12 @@ export const SeasonProspects = (props) => {
 
     setSortState({ attribute: sortBy, order })
 
-    let sortedPlayers
-    if (order === 'default') {
-      sortedPlayers = [...filteredPlayers] // Assuming players is the original unsorted array
-    } else {
-      sortedPlayers = [...filteredPlayers].sort((a, b) => {
-        let comparison = 0
-        if (typeof a[sortBy] === 'number') {
-          comparison = a[sortBy] - b[sortBy]
-        } else {
-          comparison = a[sortBy].localeCompare(b[sortBy])
-        }
-
-        return order === 'desc' ? -comparison : comparison
-      })
-    }
-
-    setFilteredPlayers(sortedPlayers)
+    refetch({
+      position: activeTab === 'all' ? undefined : activeTab,
+      sortBy: sortBy,
+      sortOrder: order
+    })
   }
-
-  // useEffect(() => {
-  //   const filteredPlayersAgain = filteredPlayers.filter(player => {
-  //     return Object.entries(filterCriteria).every(([key, value]) => {
-  //       if (!value) return true; // Ignore empty criteria
-
-  //       if (key === 'sparq') {
-  //         return player[key] > value; // Example for numeric criteria
-  //       }
-
-  //       return player[key].toLowerCase().includes(value.toLowerCase()); // Example for text criteria
-  //     });
-  //   });
-
-  //   setFilteredPlayers(filteredPlayersAgain);
-  // }, [filterCriteria, filteredPlayers]);
 
   return (
     <>
@@ -671,76 +628,14 @@ export const SeasonProspects = (props) => {
 
       {/* Add players */}
       <div className="flex flex-col gap-y-2 h-[560px] overflow-hidden overflow-y-scroll">
-        {filteredPlayers.map((player) => {
-          const {
-            data: relevantStats,
-            isLoading: isRelevantStatsLoading,
-            isError
-          } = useGetRelevantStats(player.position)
-
-          console.log('RELEVANT STATS', relevantStats)
-          return (
-            <div className="flex rounded bg-neutral-900">
-              <div className="border-r border-gray-600 flex justify-center items-center w-28">
-                <p className="text-2xl">{player.initialDraftRank}</p>
-              </div>
-              <div className="flex ml-8 w-96 pr-8 border-r border-gray-600">
-                <Portrait id={player.portrait} />
-                <div className=" flex flex-col justify-center py-2 ml-8">
-                  <p className="text-xl font-semibold">
-                    {player.firstName} {player.lastName}
-                  </p>
-                  <p>
-                    {player.college} | <span className="">{player.conference}</span>
-                  </p>
-                </div>
-              </div>
-              <div className="flex justify-center items-center w-24 border-r border-gray-600">
-                <p className="text-3xl font-semibold">{player.position}</p>
-              </div>
-              <div className="flex flex-col justify-center w-24 items-center border-r border-gray-600">
-                <p className="text-xl font-semibold">{convertInchesToFeet(player.height)}</p>
-                <p className="text-2xl">{player.weight}</p>
-              </div>
-              <div className="flex flex-col justify-center w-24 items-center border-r border-gray-600 relative">
-                <svg
-                  fill="#000000"
-                  className={`h-16 w-16 absolute top-50% right-50% stroke-slate-50 stroke-2 rotate-90 ${determineSparqColor(
-                    player.sparq
-                  )}`}
-                  version="1.1"
-                  id="Capa_1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlnsXlink="http://www.w3.org/1999/xlink"
-                  viewBox="0 0 184.751 184.751"
-                  xmlSpace="preserve"
-                >
-                  <path d="M0,92.375l46.188-80h92.378l46.185,80l-46.185,80H46.188L0,92.375z" />
-                </svg>
-                <p className="text-2xl z-10 drop-shadow-[0_1.4px_1.4px_rgba(0,0,0,1)]">
-                  {player.sparq}
-                </p>
-              </div>
-              <div className="flex flex-1 justify-between mt-2 border-r border-gray-600">
-                {!isRelevantStatsLoading && relevantStats.length > 0 && (
-                  <div className="flex justify-between w-full mx-8">
-                    {relevantStats.slice(0, 5).map((statObject, index) => (
-                      <div key={index} className='flex flex-col items-center w-36 text-center'>
-                        <p className="text-sm mb-4">
-                          {statObject.name}
-                        </p>
-                        <p className='text-2xl'>{player[statObject.stat]}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <div className="flex flex-col justify-center items-center w-56">
-                <p className="text-xl">Scouting</p>
-              </div>
-            </div>
-          )
-        })}
+        {players.map((player) => (
+          <PlayerRow
+            key={player.id}
+            player={player}
+            convertInchesToFeet={convertInchesToFeet}
+            determineSparqColor={determineSparqColor}
+          />
+        ))}
       </div>
     </>
   )

@@ -53,6 +53,22 @@ export const useUpdateSeason = () => {
   });
 }
 
+const lockScouts = async (seasonId) => {
+  const res = await window.api.ipcRenderer.invoke('lock-scouts', seasonId);
+  console.log('lockScouts res:', res);
+  return res;
+}
+
+export const useLockScouts = () => {
+  const queryClient = useQueryClient();
+  return useMutation(lockScouts, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('getAllSeasons');
+      queryClient.invalidateQueries('getSeason');
+    },
+  });
+}
+
 const deleteSeason = async (seasonId) => {
   const res = await window.api.ipcRenderer.invoke('delete-season', seasonId);
   console.log('deleteSeason res:', res);

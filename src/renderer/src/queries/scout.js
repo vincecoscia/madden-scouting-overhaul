@@ -17,6 +17,7 @@ const getScoutsBySeason = async (seasonId) => {
   return res
 }
 
+
 export const useGetScoutsBySeason = (seasonId) => {
   return useQuery(['getScoutsBySeason', seasonId], () => getScoutsBySeason(seasonId))
 }

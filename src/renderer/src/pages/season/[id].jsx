@@ -244,6 +244,7 @@ function SeasonId() {
         )}
         {activeTab === 'prospects' && (
           <Prospects
+            seasonId={season.id}
             season={season}
             franchise={franchise}
             players={players}

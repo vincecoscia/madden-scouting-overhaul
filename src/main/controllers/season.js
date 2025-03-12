@@ -66,20 +66,42 @@ export function seasonController() {
     }
   });
 
-  ipcMain.handle('update-season', (event, season) => {
+  ipcMain.handle('update-season', async (event, season) => {
     try {
       console.log('Received season:', season);
-      // Update season in database using Prisma
-      const result = prisma.season.update({
+      // Update only the scoutsLocked field in the season
+      const result = await prisma.season.update({
         where: {
           id: season.id
         },
-        data: season
+        data: {
+          scoutsLocked: season.scoutsLocked
+        }
       });
       console.log('Prisma update result:', result);
       return result;
     } catch (error) {
       console.error('Error handling update-season:', error);
+      throw error;
+    }
+  });
+
+  ipcMain.handle('lock-scouts', async (event, seasonId) => {
+    try {
+      console.log('Received lock-scouts request for season:', seasonId);
+      const result = await prisma.season.update({
+        where: {
+          id: seasonId
+        },
+        data: {
+          scoutsLocked: true
+        }
+      });
+      console.log('Prisma lock-scouts result:', result);
+      return result;
+    } catch (error) {
+      console.error('Error handling lock-scouts:', error);
+      throw error;
     }
   });
 

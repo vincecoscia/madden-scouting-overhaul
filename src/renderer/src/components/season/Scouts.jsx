@@ -2,7 +2,7 @@ import { Portrait } from '../Portrait'
 import { useState } from 'react'
 import { MessageModal } from '../utilities/MessageModal'
 import { useHireScoutForSeason, useFireScoutFromSeason } from '../../queries/scout'
-import { useUpdateSeason } from '../../queries/season'
+import { useLockScouts } from '../../queries/season'
 import { toast } from 'react-toastify'
 
 export const SeasonScouts = (props) => {
@@ -29,9 +29,9 @@ export const SeasonScouts = (props) => {
     }
   })
 
-  const { mutateAsync: lockScoutsOnSeason } = useUpdateSeason({
+  const { mutateAsync: lockScouts } = useLockScouts({
     onSuccess: () => {
-      console.log('updateSeason success')
+      console.log('lockScouts success')
     }
   })
 
@@ -160,10 +160,7 @@ export const SeasonScouts = (props) => {
                 <button
                   className="py-2 bg-green-700 text-white rounded w-full mx-2"
                   onClick={() =>
-                    lockScoutsOnSeason({
-                      ...season,
-                      scoutsLocked: true
-                    })
+                    lockScouts(season.id)
                   }
                 >
                   Lock In Scouts

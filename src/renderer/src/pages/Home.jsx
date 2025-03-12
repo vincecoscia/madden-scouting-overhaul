@@ -77,11 +77,11 @@ function Home() {
   console.log('franchises:', franchises)
 
   return (
-    <div className="flex h-full w-screen">
-      <div className="m-4 px-4 py-4 bg-slate-900 flex-1">
+    <div className="grid grid-cols-3 gap-4 h-full w-screen">
+      <div className="col-span-2 ml-4 my-4 px-4 py-4 bg-slate-900 flex-1">
         <h2 className="text-xl mb-2">Choose your Franchise</h2>
         {isLoading ? (
-          <div class="lds-ring">
+          <div className="lds-ring">
             <div></div>
             <div></div>
             <div></div>
@@ -115,10 +115,19 @@ function Home() {
           </div>
         )}
       </div>
-
-      <div className="bg-neutral-900 px-10 pt-4">
-        <h3 className="text-2xl">About</h3>
-        // TODO: Add instructions here
+      <div className="grid grid-rows-6 gap-4 my-4 mr-4">
+        <div className="p-4 bg-gray-950">
+          <h3 className="text-xl">Cheat Sheet Tool</h3>
+          <div className="mt-8">
+          <NavLink to="/cheatsheet" className="px-4 py-2 bg-slate-600 rounded hover:bg-slate-500">
+            Go to Cheat Sheet
+          </NavLink>
+          </div>
+        </div>
+        <div className="bg-neutral-900 p-4 row-span-5">
+          <h3 className="text-2xl">About</h3>
+          // TODO: Add instructions here
+        </div>
       </div>
     </div>
   )
